@@ -1,19 +1,21 @@
 <template>
 
-  <v-text-field
-    class="mb-4"
-    :label="label"
-    :hint="hint"
-    :type="type"
-    v-model="model"
-    color="primary"
-    variant="outlined">
-    <template v-slot:prepend-inner>
-      <v-icon
-        :color="iconColor"
-        :icon="icon" />
-    </template>
-  </v-text-field>
+  <div class="mb-4">
+    <v-text-field
+      :label="label"
+      :hint="hint"
+      :type="type"
+      v-model="model"
+      color="primary"
+      variant="outlined"
+      :error-messages="errorMsg">
+      <template v-slot:prepend-inner>
+        <v-icon
+          :color="errorMsg !== '' ? 'danger' : iconColor"
+          :icon="icon" />
+      </template>
+    </v-text-field>
+  </div>
 
 </template>
 
@@ -45,6 +47,10 @@ defineProps({
   iconColor: {
     type: String,
     default: 'primary'
+  },
+  errorMsg: {
+    type: String,
+    default: ''
   }
 })
 

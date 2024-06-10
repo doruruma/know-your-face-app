@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import LocalStorageService from '@/LocalStorageService'
+import { getToken } from '@/core/LocalStorageService'
 import LayoutView from '@/views/LayoutView.vue'
 import LoginView from '@/views/auth/LoginView.vue'
 import DashboardView from '@/views/dashboard/DashboardView.vue'
@@ -40,10 +40,10 @@ router.beforeEach((to, from, next) => {
   document.title = `Know My Face ${to.meta?.title ? `| ${to.meta.title}` : ''}`
   // login check
   if (to.matched.some((record) => record.meta.auth)) {
-    if (LocalStorageService.getToken() == null) router.push({ name: 'login' })
+    if (getToken() == null) router.push({ name: 'login' })
     else next()
   } else {
-    if (LocalStorageService.getToken() != null) router.push({ name: 'Home' })
+    if (getToken() != null) router.push({ name: 'dashboard' })
     else next()
   }
   next()
