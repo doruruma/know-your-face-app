@@ -4,6 +4,7 @@ import LayoutView from '@/views/LayoutView.vue'
 import LoginView from '@/views/auth/LoginView.vue'
 import DashboardView from '@/views/dashboard/DashboardView.vue'
 import SettingView from '@/views/setting/SettingView.vue'
+import UserListView from '@/views/user/UserListView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -29,6 +30,15 @@ const router = createRouter({
           meta: {
             auth: true,
             title: 'Pengaturan'
+          }
+        },
+        {
+          path: 'user',
+          name: 'user',
+          component: UserListView,
+          meta: {
+            auth: true,
+            title: 'Pegawai'
           }
         }
       ]
