@@ -1,11 +1,12 @@
 import 'vuetify/styles'
+import '@mdi/font/css/materialdesignicons.css'
 import '@/styles/main.scss'
+import '@sweetalert2/theme-material-ui/material-ui.scss'
 
 import { createApp } from 'vue'
 import { createVuetify } from 'vuetify'
 import colors from 'vuetify/util/colors'
 import { md2 } from 'vuetify/blueprints'
-import '@mdi/font/css/materialdesignicons.css'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 import App from './App.vue'

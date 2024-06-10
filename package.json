@@ -11,7 +11,9 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "@sweetalert2/theme-material-ui": "^5.0.16",
     "axios": "^1.6.8",
+    "sweetalert2": "^11.11.1",
     "vue": "^3.4.21",
     "vue-router": "^4.3.0",
     "vuetify": "^3.6.3"
