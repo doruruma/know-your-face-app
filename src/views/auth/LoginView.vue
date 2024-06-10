@@ -3,30 +3,44 @@
     <v-container class="h-100">
       <v-row class="justify-center align-center h-100">
 
-        <v-col cols="10" xl="3" lg="4" md="6" sm="8" class="bg-white rounded-lg">
-          <div class="pa-4">
+        <v-col cols="10" xl="3" lg="4" md="6" sm="8">
+          <v-alert
+            closable
+            v-model="isError"
+            type="error"
+            icon="mdi-alert-circle-outline"
+            variant="tonal"
+            density="comfortable"
+            :text="serverError"
+            class="mb-4" />
+          <v-form
+            class="pa-4 bg-white rounded-lg"
+            @submit.prevent="formOnSubmit()">
             <div class="text-h5 text-center mb-8">Login to <span class="font-weight-bold">Know My Face</span></div>
             <TextField
               label="Email"
               hint="Ketik email akun anda"
               icon="mdi-email"
               type="email"
-              v-model="email" />
+              :error-msg="formError.username[0]"
+              v-model="formData.username" />
             <TextField
               label="Password"
               hint="Ketik password anda"
               icon="mdi-lock"
               type="password"
-              v-model="password" />
+              :error-msg="formError.password[0]"
+              v-model="formData.password" />
             <v-btn
               block
+              type="submit"
+              :loading="isLoading"
               prepend-icon="mdi-login"
               variant="flat"
-              size="large"
-              @click="btnLoginOnClick()">
+              size="large">
               Masuk
             </v-btn>
-          </div>
+          </v-form>
         </v-col>
 
       </v-row>
@@ -37,15 +51,50 @@
 <script setup>
 import { useRouter } from "vue-router"
 import { ref } from 'vue'
+import Api from '@/core/ApiService'
 import TextField from '@/components/textfields/TextField.vue'
+import { saveRefreshToken, saveToken } from "@/core/LocalStorageService"
+
+const initFormData = {
+  username: '',
+  password: ''
+}
+const initFormError = {
+  username: [],
+  password: []
+}
 
 const router = useRouter()
-const email = ref('')
-const password = ref('')
+const isLoading = ref(false)
+const formData = ref(initFormData)
+const formError = ref(initFormError)
+const isError = ref(false)
+const serverError = ref('')
 
-// btn login @click
-const btnLoginOnClick = () => {
-  router.push({ name: 'dashboard' })
+const formOnSubmit = async () => {
+  try {
+    isLoading.value = true
+    formError.value = initFormError
+    const response = await Api.post('login', formData.value)
+    if (response.status === 200) {
+      const data = response.data
+      saveToken(data.access_token)
+      saveRefreshToken(data.refresh_token)
+      router.push({ name: 'dashboard' })
+    }
+  } catch (error) {
+    if (error.response) {
+      const errorContent = error.response
+      if (errorContent.status === 422)
+        formError.value = errorContent.data.errors
+      if (errorContent.status === 400) {
+        isError.value = true
+        serverError.value = errorContent.data.message
+      }
+    }
+  } finally {
+    isLoading.value = false
+  }
 }
 </script>
 
