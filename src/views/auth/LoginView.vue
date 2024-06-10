@@ -14,7 +14,7 @@
             :text="serverError"
             class="mb-4" />
           <v-form
-            class="pa-4 bg-white rounded-lg"
+            class="pa-6 bg-white rounded-lg"
             @submit.prevent="formOnSubmit()">
             <div class="text-h5 text-center mb-8">Login to <span class="font-weight-bold">Know My Face</span></div>
             <TextField
@@ -37,6 +37,7 @@
               :loading="isLoading"
               prepend-icon="mdi-login"
               variant="flat"
+              rounded="lg"
               size="large">
               Masuk
             </v-btn>

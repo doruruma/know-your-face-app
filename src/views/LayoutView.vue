@@ -13,11 +13,13 @@
         </template>
       </v-list-item>
       <v-divider />
-      <v-list-item link :active="currentRouteName == 'dashboard'" subtitle="Dashboard" height="48">
-        <template v-slot:prepend>
-          <v-icon icon="mdi-view-dashboard-outline" color="primary"></v-icon>
-        </template>
-      </v-list-item>
+      <router-link custom :to="{ name: 'dashboard' }" v-slot="{ href, navigate, isActive }">
+        <v-list-item link :active="isActive" subtitle="Dashboard" height="48" @click="() => navigate(href)">
+          <template v-slot:prepend>
+            <v-icon icon="mdi-view-dashboard-outline" color="primary"></v-icon>
+          </template>
+        </v-list-item>
+      </router-link>
       <v-list-item link subtitle="Kehadiran" height="48">
         <template v-slot:prepend>
           <v-icon icon="mdi-account-multiple-check-outline" color="primary"></v-icon>
@@ -45,6 +47,13 @@
         </template>
       </v-list-item>
       <v-divider />
+      <router-link custom :to="{ name: 'setting' }" v-slot="{ href, navigate, isActive }">
+        <v-list-item link :active="isActive" subtitle="Pengaturan" height="48" @click="() => { navigate(href) }">
+          <template v-slot:prepend>
+            <v-icon icon="mdi-cogs" color="primary"></v-icon>
+          </template>
+        </v-list-item>
+      </router-link>
       <v-list-item link subtitle="Profil Saya" height="48">
         <template v-slot:prepend>
           <v-icon icon="mdi-account-edit-outline" color="primary"></v-icon>
@@ -78,9 +87,5 @@
 
 <script setup>
 import { ref } from 'vue'
-import { useRoute } from 'vue-router'
-
 const isShowDrawer = ref(true)
-const route = useRoute()
-const currentRouteName = route.name
 </script>
