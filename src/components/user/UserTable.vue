@@ -59,7 +59,7 @@
         <td>{{ item.nik }}</td>
         <td>{{ item.email }}</td>
         <td>{{ item.phone }}</td>
-        <td>{{ item.gender }}</td>
+        <td>{{ item.formatted_gender }}</td>
         <td>{{ item.position.name ?? '-' }}</td>
         <td>
           <div class="d-flex align-center">

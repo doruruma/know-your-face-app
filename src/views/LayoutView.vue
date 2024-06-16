@@ -79,7 +79,7 @@
   </v-app-bar>
 
   <v-main>
-    <transition enter-active-class="animate__animated animate__fadeInDown animate__faster" appear>
+    <transition enter-active-class="animate__animated animate__fadeInRight animate__faster" appear>
       <v-container :key="key">
         <RouterView />
       </v-container>
