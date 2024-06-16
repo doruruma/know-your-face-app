@@ -24,7 +24,8 @@ const vuetify = createVuetify({
       light: {
         dark: false,
         colors: {
-          primary: colors.indigo.base
+          primary: colors.indigo.base,
+          secondary: colors.grey.lighten4
         }
       }
     }

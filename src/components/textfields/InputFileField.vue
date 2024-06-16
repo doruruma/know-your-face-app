@@ -1,53 +1,38 @@
 <template>
   <div :class="containerStyles">
-    <v-text-field
+    <v-file-input
       v-model="model"
       :label="label"
       :hint="hint"
-      :type="type"
       :color="color"
       :variant="variant"
-      :error-messages="errorMsg">
+      :prepend-icon="null"
+      :error-messages="errorMsg"
+      @click:clear="onClear">
       <template v-if="icon !== ''" v-slot:prepend-inner>
         <v-icon
           :color="errorMsg !== '' ? 'danger' : iconColor"
           :icon="icon" />
       </template>
-      <template v-if="appendIcon !== ''" v-slot:append-inner>
-        <v-icon
-          @click="appendInnerOnClick"
-          :color="iconColor"
-          :icon="appendIcon" />
-      </template>
-    </v-text-field>
+    </v-file-input>
   </div>
 </template>
 
 <script setup>
 const model = defineModel()
-const emit = defineEmits([
-  'appendInnerOnClick'
-])
+const emit = defineEmits(['clear'])
 defineProps({
   variant: {
     type: String,
     default: 'outlined'
   },
+  label: {
+    type: String,
+    default: ""
+  },
   color: {
     type: String,
     default: 'primary'
-  },
-  label: {
-    type: String,
-    default: ''
-  },
-  hint: {
-    type: String,
-    default: ''
-  },
-  type: {
-    type: String,
-    default: 'text'
   },
   icon: {
     type: String,
@@ -57,7 +42,7 @@ defineProps({
     type: String,
     default: 'primary'
   },
-  appendIcon: {
+  hint: {
     type: String,
     default: ''
   },
@@ -71,8 +56,8 @@ defineProps({
   }
 })
 
-const appendInnerOnClick = () => {
-  emit('appendInnerOnClick')
+const onClear = () => {
+  emit('clear')
 }
 </script>
 

@@ -8,15 +8,13 @@
       hint="Ketik alamat kantor"
       icon="mdi-office-building"
       :error-msg="error.office_address[0]"
-      v-model="form.office_address"
-      class="mb-4" />
+      v-model="form.office_address" />
     <TextField
       label="Koordinat longitude"
       hint="Ketik longitude"
       icon="mdi-longitude"
       :error-msg="error.office_longitude[0]"
-      v-model="form.office_longitude"
-      class="mb-4" />
+      v-model="form.office_longitude" />
     <TextField
       label="Koordinat latitude"
       hint="Ketik latitude"
@@ -31,12 +29,9 @@
       :error-msg="error.max_distance[0]"
       v-model="form.max_distance" />
     <v-btn
-      block
       type="submit"
       :loading="isLoading"
-      size="large"
-      variant="flat"
-      rounded="lg">
+      variant="flat">
       Simpan Perubahan
     </v-btn>
   </v-form>

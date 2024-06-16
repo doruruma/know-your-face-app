@@ -62,19 +62,19 @@
     </v-list-item>
     <v-list-item link subtitle="Logout" height="48">
       <template v-slot:prepend>
-        <v-icon icon="mdi-logout"></v-icon>
+        <v-icon icon="mdi-logout" color="red"></v-icon>
       </template>
     </v-list-item>
   </v-navigation-drawer>
 
   <v-app-bar :elevation="0">
-    <v-app-bar-nav-icon @click="isShowDrawer = !isShowDrawer" color="grey"></v-app-bar-nav-icon>
+    <v-app-bar-nav-icon @click="isShowDrawer = !isShowDrawer" color="primary"></v-app-bar-nav-icon>
     <v-app-bar-title>
       <div class="text-subtitle-1 text-grey-darken-1">Hai, Admin</div>
     </v-app-bar-title>
     <template v-slot:append>
-      <v-btn icon="mdi-bell-outline" color="grey"></v-btn>
-      <v-btn icon="mdi-logout" color="grey"></v-btn>
+      <v-btn icon="mdi-bell-outline" color="primary"></v-btn>
+      <v-btn icon="mdi-logout" color="red"></v-btn>
     </template>
   </v-app-bar>
 

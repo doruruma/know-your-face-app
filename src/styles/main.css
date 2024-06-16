@@ -1,3 +1,31 @@
 html {
   overflow-y: auto;
+}
+
+body {
+  font-family: "Poppins" !important;
+}
+
+.v-application .text-h1,
+.v-application .text-h2,
+.v-application .text-h3,
+.v-application .text-h4,
+.v-application .text-h5,
+.v-application .text-h6,
+.v-application .text-subtitle-1,
+.v-application .text-subtitle-2,
+.v-application .text-body-1,
+.v-application .text-body-2,
+.v-application .text-button,
+.v-application .text-caption,
+.v-application .text-overline {
+  font-family: "Poppins" !important;
+}
+.v-application .v-table__wrapper > table > thead > tr > th {
+  background: #F5F5F5 !important;
+}
+
+.v-list-item-subtitle {
+  opacity: 1 !important;
+  line-height: unset !important;
 }/*# sourceMappingURL=main.css.map */
