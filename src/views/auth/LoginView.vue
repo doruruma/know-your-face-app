@@ -1,5 +1,5 @@
 <template>
-  <v-app class="bg-grey-lighten-4">
+  <v-app class="bg-secondary">
     <v-container class="h-100">
       <v-row class="justify-center align-center h-100">
 
@@ -35,9 +35,8 @@
               block
               type="submit"
               :loading="isLoading"
-              prepend-icon="mdi-login"
               variant="flat"
-              rounded="lg"
+              prepend-icon="mdi-login"
               size="large">
               Masuk
             </v-btn>

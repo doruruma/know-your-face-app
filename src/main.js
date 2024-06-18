@@ -1,7 +1,8 @@
+import 'animate.css'
 import 'vuetify/styles'
 import '@mdi/font/css/materialdesignicons.css'
 import '@/styles/main.scss'
-import '@sweetalert2/theme-material-ui/material-ui.scss'
+import '@sweetalert2/theme-bulma/bulma.scss'
 
 import { createApp } from 'vue'
 import { createVuetify } from 'vuetify'
@@ -23,7 +24,8 @@ const vuetify = createVuetify({
       light: {
         dark: false,
         colors: {
-          primary: colors.indigo.base
+          primary: colors.indigo.base,
+          secondary: colors.grey.lighten4
         }
       }
     }

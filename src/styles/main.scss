@@ -23,6 +23,11 @@ body {
   .text-overline {
     font-family: "Poppins" !important;
   }
+
+  .v-table__wrapper>table>thead>tr>th {
+    background: #F5F5F5 !important;
+  }
+
 }
 
 .v-list-item-subtitle {
