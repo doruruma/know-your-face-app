@@ -19,11 +19,13 @@
         </template>
       </v-list-item>
     </router-link>
-    <v-list-item link subtitle="Kehadiran" height="48">
-      <template v-slot:prepend>
-        <v-icon icon="mdi-account-multiple-check-outline" color="primary"></v-icon>
-      </template>
-    </v-list-item>
+    <router-link custom :to="{ name: 'presence' }" v-slot="{ href, navigate, isActive }">
+      <v-list-item link :active="isActive" subtitle="Kehadiran" height="48" @click="() => navigate(href)">
+        <template v-slot:prepend>
+          <v-icon icon="mdi-account-multiple-check-outline" color="primary"></v-icon>
+        </template>
+      </v-list-item>
+    </router-link>
     <v-list-item link subtitle="Pengajuan Cuti" height="48">
       <template v-slot:prepend>
         <v-icon icon="mdi-calendar-remove" color="primary"></v-icon>

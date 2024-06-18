@@ -41,7 +41,13 @@ Api.interceptors.response.use(
       }
       originalRequest._retry = true
       isRefreshing = true
-      return refreshToken(originalRequest)
+      try {
+        return await refreshToken(originalRequest)
+      } catch (error) {
+        destroyCredential()
+        router.replace({ name: 'login' })
+        return Promise.reject(error)
+      }
     }
     return Promise.reject(error)
   }
@@ -60,8 +66,6 @@ const refreshToken = async (originalRequest) => {
       return Api(originalRequest)
     }
   } catch (error) {
-    destroyCredential()
-    router.replace({ name: 'login' })
     return Promise.reject(error)
   } finally {
     isRefreshing = false

@@ -54,10 +54,11 @@
       </v-radio-group>
 
       <SelectField
-        label="Posisi"
         v-model="form.position_id"
-        item-title="name"
+        label="Posisi"
         item-value="id"
+        item-title="name"
+        place-holder="Posisi Pegawai"
         :items="positions"
         :error-msg="error.position_id[0]" />
 

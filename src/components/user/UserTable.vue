@@ -34,13 +34,13 @@
     fixed-header
     style="max-height: 540px">
     <thead>
-      <tr>
-        <th class="text-left">Nama</th>
-        <th class="text-left">NIK</th>
-        <th class="text-left">Email</th>
-        <th class="text-left">Nomor HP</th>
-        <th class="text-left">Jenis kelamin</th>
-        <th class="text-left">Posisi</th>
+      <tr class="text-left">
+        <th>Nama</th>
+        <th>NIK</th>
+        <th>Email</th>
+        <th>Nomor HP</th>
+        <th>Jenis kelamin</th>
+        <th>Posisi</th>
         <th></th>
       </tr>
     </thead>
@@ -116,6 +116,7 @@ defineProps({
     default: 1
   }
 })
+
 const search = ref('')
 const page = ref(1)
 const emit = defineEmits([

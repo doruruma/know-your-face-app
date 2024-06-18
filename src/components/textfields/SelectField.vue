@@ -8,7 +8,8 @@
       :item-title="itemTitle"
       :item-value="itemValue"
       :variant="variant"
-      :error-messages="errorMsg">
+      :error-messages="errorMsg"
+      :clearable="clearable">
       <template v-slot:item="{ props, item }">
         <v-list-item
           v-bind="props"
@@ -51,6 +52,14 @@ const props = defineProps({
     type: String,
     default: ''
   },
+  placeHolder: {
+    type: String,
+    default: 'Item'
+  },
+  clearable: {
+    type: Boolean,
+    default: false
+  },
   containerStyles: {
     type: String,
     default: 'mb-4'
@@ -58,7 +67,7 @@ const props = defineProps({
 })
 const computedItems = computed(() => {
   const result = props.items
-  result.unshift({ id: null, name: 'Pilih Posisi Pegawai' })
+  result.unshift({ id: null, name: `Pilih ${props.placeHolder}` })
   return result
 })
 </script>

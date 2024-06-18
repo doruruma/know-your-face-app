@@ -4,6 +4,8 @@ import LayoutView from '@/views/LayoutView.vue'
 import LoginView from '@/views/auth/LoginView.vue'
 import DashboardView from '@/views/dashboard/DashboardView.vue'
 import SettingView from '@/views/setting/SettingView.vue'
+import PresenceListView from '@/views/presence/PresenceListView.vue'
+import PresenceDetailView from '@/views/presence/PresenceDetailView.vue'
 import UserListView from '@/views/user/UserListView.vue'
 import UserFormView from '@/views/user/UserFormView.vue'
 import UserDetailView from '@/views/user/UserDetailView.vue'
@@ -32,6 +34,24 @@ const router = createRouter({
           meta: {
             auth: true,
             title: 'Pengaturan'
+          }
+        },
+        {
+          path: 'presence',
+          name: 'presence',
+          component: PresenceListView,
+          meta: {
+            auth: true,
+            title: 'Kehadiran'
+          }
+        },
+        {
+          path: 'presence/:id',
+          name: 'presence-detail',
+          component: PresenceDetailView,
+          meta: {
+            auth: true,
+            title: 'Kehadiran'
           }
         },
         {
