@@ -1,15 +1,23 @@
 import Swal from 'sweetalert2/dist/sweetalert2.js'
 
+export const Prompt = Swal.mixin({
+  icon: 'question',
+  showCancelButton: true,
+  cancelButtonText: 'Batal'
+})
+
 export const Toast = Swal.mixin({
   toast: true,
   position: "top-end",
   showConfirmButton: false,
-  timer: 3000,
+  timer: 2000,
   timerProgressBar: true,
-  didOpen: (toast) => {
-    toast.onmouseenter = Swal.stopTimer
-    toast.onmouseleave = Swal.resumeTFimer
+  showClass: {
+    popup: `animate__animated animate__fadeInRight animate__faster`
+  },
+  hideClass: {
+    popup: `animate__animated animate__fadeOutRight animate__faster`
   }
 })
 
-export default { Toast }
+export default { Prompt, Toast }

@@ -12,16 +12,21 @@
       @pageChange="handlePageChange"
       @search="handleSearch"
       @detail="handleDetail"
-      @edit="handleEdit" />
+      @edit="handleEdit"
+      @delete="handleDelete" />
   </div>
 </template>
 
 <script setup>
 import UserTable from '@/components/user/UserTable.vue'
 import Api from '@/core/ApiService'
+import { Prompt, Toast } from '@/core/Swal'
 import router from '@/router'
 import { ref } from 'vue'
+import { globalState } from '@/core/State'
+import { toRefs } from 'vue'
 
+const global = toRefs(globalState)
 const data = ref([])
 const lastPage = ref(1)
 const page = ref(1)
@@ -46,6 +51,13 @@ const handleEdit = (id) => {
   router.push({ name: 'edit-user', params: { id } })
 }
 
+const handleDelete = (id) => {
+  Prompt.fire({ title: 'Hapus pegawai ini?' }).then(result => {
+    if (result.value)
+      deleteData(id)
+  })
+}
+
 const getData = async () => {
   try {
     let url = `users?page=${page.value}`
@@ -59,6 +71,25 @@ const getData = async () => {
     }
   } catch (error) {
     console.log(error)
+  }
+}
+
+const deleteData = async (id) => {
+  try {
+    global.isLoading.value = true
+    const response = await Api.post(`user/${id}`, { _method: 'delete' })
+    if (response.status === 200) {
+      page.value = 1
+      getData()
+      Toast.fire({
+        title: 'Pegawai terhapus',
+        icon: 'success'
+      })
+    }
+  } catch (error) {
+    console.log(error)
+  } finally {
+    global.isLoading.value = false
   }
 }
 

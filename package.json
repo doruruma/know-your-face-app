@@ -11,10 +11,11 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "@sweetalert2/theme-bulma": "^5.0.16",
     "@sweetalert2/theme-material-ui": "^5.0.16",
     "animate.css": "^4.1.1",
     "axios": "^1.6.8",
-    "sweetalert2": "^11.11.1",
+    "sweetalert2": "^11.12.0",
     "vue": "^3.4.21",
     "vue-router": "^4.3.0",
     "vuetify": "^3.6.3"

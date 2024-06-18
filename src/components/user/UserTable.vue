@@ -129,19 +129,24 @@ const emit = defineEmits([
 const onPageChange = (value) => {
   emit('pageChange', value)
 }
+
 const onSearch = () => {
   page.value = 1
   emit('search', search.value)
 }
+
 const onDetail = (id) => {
   emit('detail', id)
 }
+
 const onEdit = (id) => {
   emit('edit', id)
 }
+
 const onDelete = (id) => {
   emit('delete', id)
 }
+
 </script>
 
 <style lang="scss" scoped>

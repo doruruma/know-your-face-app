@@ -60,7 +60,11 @@ import { API_URL } from '@/core/Constants'
 import router from '@/router'
 import { ref } from 'vue'
 import { useRoute } from 'vue-router'
+import { globalState } from '@/core/State'
+import { toRefs } from 'vue'
+import { Prompt, Toast } from '@/core/Swal'
 
+const global = toRefs(globalState)
 const route = useRoute()
 const id = route.params.id
 const data = ref(null)
@@ -72,7 +76,10 @@ const onEdit = () => {
 }
 
 const onDelete = () => {
-
+  Prompt.fire({ title: 'Hapus pegawai ini?' }).then(result => {
+    if (result.value)
+      deleteData(id)
+  })
 }
 
 const getData = async () => {
@@ -87,6 +94,24 @@ const getData = async () => {
     console.log(error)
   } finally {
     isLoading.value = false
+  }
+}
+
+const deleteData = async (id) => {
+  try {
+    global.isLoading.value = true
+    const response = await Api.post(`user/${id}`, { _method: 'delete' })
+    if (response.status === 200) {
+      Toast.fire({
+        title: 'Pegawai terhapus',
+        icon: 'success'
+      })
+      router.back()
+    }
+  } catch (error) {
+    console.log(error)
+  } finally {
+    global.isLoading.value = false
   }
 }
 
