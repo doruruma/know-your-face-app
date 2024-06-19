@@ -136,13 +136,13 @@
 </template>
 
 <script setup>
-import TextField from '@/components/textfields/TextField.vue'
-import SelectField from '@/components/textfields/SelectField.vue'
+import TextField from '@/components/textfield/TextField.vue'
+import SelectField from '@/components/textfield/SelectField.vue'
 import BackButton from '@/components/utils/BackButton.vue'
 import Api from '@/core/ApiService'
 import { API_URL } from '@/core/Constants'
 import { onMounted, ref } from 'vue'
-import InputFileField from '@/components/textfields/InputFileField.vue'
+import InputFileField from '@/components/textfield/InputFileField.vue'
 import router from '@/router'
 import { Toast } from '@/core/Swal'
 
@@ -284,7 +284,7 @@ const getPositions = async () => {
 }
 
 const getData = async () => {
-  const response = await Api.get(`user/${props.id}`)
+  const response = await Api.get(endpoint.value)
   if (response.status === 204) {
     Toast.fire({
       title: 'Data tidak ditemukan',

@@ -6,6 +6,8 @@ import DashboardView from '@/views/dashboard/DashboardView.vue'
 import SettingView from '@/views/setting/SettingView.vue'
 import PresenceListView from '@/views/presence/PresenceListView.vue'
 import PresenceDetailView from '@/views/presence/PresenceDetailView.vue'
+import HolidayListView from '@/views/holiday/HolidayListView.vue'
+import HolidayFormView from '@/views/holiday/HolidayFormView.vue'
 import UserListView from '@/views/user/UserListView.vue'
 import UserFormView from '@/views/user/UserFormView.vue'
 import UserDetailView from '@/views/user/UserDetailView.vue'
@@ -55,6 +57,33 @@ const router = createRouter({
           }
         },
         {
+          path: 'holiday',
+          name: 'holiday',
+          component: HolidayListView,
+          meta: {
+            auth: true,
+            title: 'Jadwal Libur'
+          }
+        },
+        {
+          path: 'add-holiday',
+          name: 'add-holiday',
+          component: HolidayFormView,
+          meta: {
+            auth: true,
+            title: 'Tambah Jadwal Libur'
+          }
+        },
+        {
+          path: 'edit-holiday/:id',
+          name: 'edit-holiday',
+          component: HolidayFormView,
+          meta: {
+            auth: true,
+            title: 'Edit Jadwal Libur'
+          }
+        },
+        {
           path: 'user',
           name: 'user',
           component: UserListView,
@@ -82,7 +111,7 @@ const router = createRouter({
           }
         },
         {
-          path: 'user-detail/:id',
+          path: 'user/:id',
           name: 'user-detail',
           component: UserDetailView,
           meta: {

@@ -77,7 +77,7 @@
 <script setup>
 import { API_URL } from '@/core/Constants'
 import { ref } from 'vue'
-import SelectField from '../textfields/SelectField.vue'
+import SelectField from '../textfield/SelectField.vue'
 
 defineProps({
   data: {

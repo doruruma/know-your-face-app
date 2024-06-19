@@ -9,7 +9,7 @@
           icon="mdi-magnify"
           icon-color="teal"
           color="teal"
-          label="Cari pegawai"
+          label="Cari Data"
           variant="underlined" />
         <v-btn
           class="d-none d-sm-flex"
@@ -35,12 +35,8 @@
     style="max-height: 540px">
     <thead>
       <tr class="text-left">
-        <th>Nama</th>
-        <th>NIK</th>
-        <th>Email</th>
-        <th>Nomor HP</th>
-        <th>Jenis kelamin</th>
-        <th>Posisi</th>
+        <th>Tanggal Libur</th>
+        <th>Keterangan</th>
         <th></th>
       </tr>
     </thead>
@@ -48,28 +44,10 @@
       <tr
         v-for="(item, index) in data"
         :key="`${item.id}-${index}`">
-        <td>
-          <div class="d-flex align-center py-1">
-            <img
-              class="img-profile mr-2"
-              :src="`${API_URL}${item.profile_image}`" />
-            <span>{{ item.name }}</span>
-          </div>
-        </td>
-        <td>{{ item.nik }}</td>
-        <td>{{ item.email }}</td>
-        <td>{{ item.phone }}</td>
-        <td>{{ item.formatted_gender }}</td>
-        <td>{{ item.position.name ?? '-' }}</td>
+        <td>{{ item.formated_date }}</td>
+        <td>{{ item.name }}</td>
         <td>
           <div class="d-flex align-center">
-            <v-btn
-              variant="flat"
-              icon="mdi-information-variant"
-              size="small"
-              class="mr-2"
-              @click="() => onDetail(item.id)">
-            </v-btn>
             <v-btn
               variant="flat"
               icon="mdi-pencil"
@@ -102,7 +80,6 @@
 </template>
 
 <script setup>
-import { API_URL } from '@/core/Constants'
 import TextField from '../textfield/TextField.vue'
 import { ref } from 'vue'
 
@@ -122,10 +99,10 @@ const page = ref(1)
 const emit = defineEmits([
   'search',
   'pageChange',
-  'detail',
   'edit',
   'delete'
 ])
+
 
 const onPageChange = (value) => {
   emit('pageChange', value)
@@ -134,10 +111,6 @@ const onPageChange = (value) => {
 const onSearch = () => {
   page.value = 1
   emit('search', search.value)
-}
-
-const onDetail = (id) => {
-  emit('detail', id)
 }
 
 const onEdit = (id) => {
@@ -149,10 +122,4 @@ const onDelete = (id) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.img-profile {
-  width: 56px;
-  height: 56px;
-  object-fit: contain;
-}
-</style>
+<style lang="scss" scoped></style>

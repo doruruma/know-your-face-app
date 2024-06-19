@@ -40,7 +40,7 @@
 <script setup>
 import Api from '@/core/ApiService'
 import { Toast } from '@/core/Swal'
-import TextField from '@/components/textfields/TextField.vue'
+import TextField from '@/components/textfield/TextField.vue'
 import { onMounted, ref } from 'vue'
 
 const initForm = {
