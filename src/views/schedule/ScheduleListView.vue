@@ -1,9 +1,9 @@
 <template>
   <div class="d-flex justify-space-between align-center mb-2">
-    <div class="text-h5 mb-3">Jadwal Libur</div>
+    <div class="text-h5 mb-3">Jadwal WFH</div>
     <v-btn
       prepend-icon="mdi-plus"
-      @click="() => router.push({ name: 'add-holiday' })">Tambah</v-btn>
+      @click="() => router.push({ name: 'add-schedule' })">Tambah</v-btn>
   </div>
   <div class="bg-white pa-6 rounded-lg">
     <v-tabs
@@ -15,11 +15,10 @@
     </v-tabs>
     <v-tabs-window v-model="tab">
       <v-tabs-window-item value="1">
-        <HolidayTable
+        <ScheduleTable
           :data="dataTable"
           :last-page="lastPage"
           @pageChange="handlePageChange"
-          @search="handleSearch"
           @edit="handleEdit"
           @delete="handleDelete" />
       </v-tabs-window-item>
@@ -31,14 +30,14 @@
 </template>
 
 <script setup>
-import { globalState } from '@/core/State'
+import ScheduleTable from '@/components/schedule/ScheduleTable.vue'
 import CalendarView from '@/components/utils/CalendarView.vue'
-import { ref, toRefs } from 'vue'
 import Api from '@/core/ApiService'
-import moment from 'moment'
-import HolidayTable from '@/components/holiday/HolidayTable.vue'
+import { globalState } from '@/core/State'
+import { Prompt } from '@/core/Swal'
 import router from '@/router'
-import { Prompt, Toast } from '@/core/Swal'
+import moment from 'moment'
+import { ref, toRefs } from 'vue'
 
 const global = toRefs(globalState)
 const dataTable = ref([])
@@ -46,7 +45,6 @@ const dataCalendar = ref([])
 const lastPage = ref(1)
 const page = ref(1)
 const year = ref(moment().year())
-const search = ref(null)
 const tab = ref(null)
 
 const onTabChange = value => {
@@ -67,14 +65,8 @@ const handlePageChange = (value) => {
   getDataTable()
 }
 
-const handleSearch = (value) => {
-  search.value = value
-  page.value = 1
-  getDataTable()
-}
-
 const handleEdit = (id) => {
-  router.push({ name: 'edit-holiday', params: { id } })
+  router.push({ name: 'edit-schedule', params: { id } })
 }
 
 const handleDelete = (id) => {
@@ -84,17 +76,8 @@ const handleDelete = (id) => {
   })
 }
 
-const getDataCalendar = async () => {
-  const response = await Api.get(`holidays/${year.value}`)
-  if (response.status === 200)
-    dataCalendar.value = response.data.data
-}
-
 const getDataTable = async () => {
-  let url = `holidays?page=${page.value}`
-  if (search.value)
-    url += `&search=${search.value}`
-  const response = await Api.get(url)
+  const response = await Api.get(`remote-schedules?page=${page.value}`)
   if (response.status === 200) {
     const result = response.data
     dataTable.value = result.data
@@ -102,23 +85,19 @@ const getDataTable = async () => {
   }
 }
 
-const deleteData = async id => {
-  try {
-    global.isLoading.value = true
-    const response = await Api.post(`holiday/${id}`, { _method: 'delete' })
-    if (response.status === 200) {
-      page.value = 1
-      getDataTable()
-      Toast.fire({
-        title: 'Data terhapus',
-        icon: 'success'
-      })
-    }
-  } catch (error) {
-    console.log(error)
-  } finally {
-    global.isLoading.value = false
+const getDataCalendar = async () => {
+  const response = await Api.get(`remote-schedules/${year.value}`)
+  if (response.status === 200) {
+    const responseData = response.data.data
+    responseData.map(value => {
+      value.name = value.user.name ?? '-'
+    })
+    dataCalendar.value = responseData
   }
+}
+
+const deleteData = async () => {
+
 }
 </script>
 

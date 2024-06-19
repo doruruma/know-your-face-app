@@ -32,11 +32,13 @@
       </template>
     </v-list-item>
     <v-divider />
-    <v-list-item link subtitle="Jadwal Kerja" height="48">
-      <template v-slot:prepend>
-        <v-icon icon="mdi-calendar-range" color="primary"></v-icon>
-      </template>
-    </v-list-item>
+    <router-link custom :to="{ name: 'schedule' }" v-slot="{ href, navigate, isActive }">
+      <v-list-item link :active="isActive" subtitle="Jadwal WFH" height="48" @click="() => navigate(href)">
+        <template v-slot:prepend>
+          <v-icon icon="mdi-calendar-range" color="primary"></v-icon>
+        </template>
+      </v-list-item>
+    </router-link>
     <router-link custom :to="{ name: 'holiday' }" v-slot="{ href, navigate, isActive }">
       <v-list-item link :active="isActive" subtitle="Jadwal Libur" height="48" @click="() => navigate(href)">
         <template v-slot:prepend>

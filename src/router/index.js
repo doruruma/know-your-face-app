@@ -8,6 +8,7 @@ import PresenceListView from '@/views/presence/PresenceListView.vue'
 import PresenceDetailView from '@/views/presence/PresenceDetailView.vue'
 import HolidayListView from '@/views/holiday/HolidayListView.vue'
 import HolidayFormView from '@/views/holiday/HolidayFormView.vue'
+import ScheduleListView from '@/views/schedule/ScheduleListView.vue'
 import UserListView from '@/views/user/UserListView.vue'
 import UserFormView from '@/views/user/UserFormView.vue'
 import UserDetailView from '@/views/user/UserDetailView.vue'
@@ -81,6 +82,15 @@ const router = createRouter({
           meta: {
             auth: true,
             title: 'Edit Jadwal Libur'
+          }
+        },
+        {
+          path: 'schedule',
+          name: 'schedule',
+          component: ScheduleListView,
+          meta: {
+            auth: true,
+            title: 'Jadwal WFH'
           }
         },
         {

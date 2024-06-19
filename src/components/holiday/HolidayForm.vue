@@ -102,6 +102,14 @@ const onSubmit = async () => {
         Object.assign(error.value, errorContent.data.errors)
         console.log(error.value)
       }
+      if (errorContent.status === 500) {
+        Toast.fire({
+          title: errorContent.data.message,
+          icon: 'error'
+        })
+        if (props.id !== 0)
+          router.back()
+      }
     }
   } finally {
     isLoading.value = false
