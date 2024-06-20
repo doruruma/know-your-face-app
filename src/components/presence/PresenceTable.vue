@@ -1,6 +1,16 @@
 <template>
-
-  <v-row class="justify-end pb-3">
+  <v-row class="justify-end pt-3">
+    <v-col cols="12" lg="4" sm="6" xs="12">
+      <TextField
+        v-model="userName"
+        readonly
+        clearable
+        container-styles=""
+        label="Filter Pegawai"
+        placeholder="Pilih Pegawai"
+        @click="handleInputUserClick"
+        @clear="handleInputUserClear" />
+    </v-col>
     <v-col cols="12" lg="4" sm="6" xs="12">
       <SelectField
         v-model="statusId"
@@ -8,6 +18,7 @@
         place-holder="Status"
         item-value="id"
         item-title="name"
+        container-styles=""
         :items="statuses"
         clearable
         @update:modelValue="onStatusChange" />
@@ -72,12 +83,20 @@
   <v-pagination v-if="data.length > 0" v-model="page" :length="lastPage" class="mt-4" @update:modelValue="onPageChange">
   </v-pagination>
 
+  <v-dialog v-model="showUserDialog" class="align-start">
+    <div class="bg-white pa-6 rounded-lg">
+      <UserTable :data="users" :last-page="usersLastPage" :is-crud="false" :selected-id="userId" @pageChange="handleUsersPageChange" @search="handleUsersSearch" @click="handleUsersClick" />
+    </div>
+  </v-dialog>
 </template>
 
 <script setup>
 import { API_URL } from '@/core/Constants'
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import SelectField from '../textfield/SelectField.vue'
+import UserTable from '../user/UserTable.vue'
+import Api from '@/core/ApiService'
+import TextField from '../textfield/TextField.vue'
 
 defineProps({
   data: {
@@ -94,13 +113,48 @@ const statuses = ref([
   { id: 1, name: 'WFO' },
   { id: 2, name: 'WFH' }
 ])
+const showUserDialog = ref(false)
 const statusId = ref(null)
+const userId = ref(null)
+const userName = ref('')
+const users = ref([])
+const usersPage = ref(1)
+const usersLastPage = ref(1)
+const usersSearch = ref(null)
 const page = ref(1)
 const emit = defineEmits([
   'pageChange',
   'statusChange',
-  'detail'
+  'userChange',
+  'detail',
 ])
+
+const handleInputUserClick = () => {
+  showUserDialog.value = true
+}
+
+const handleInputUserClear = () => {
+  userId.value = null
+  userName.value = ''
+  emit('userChange', null)
+}
+
+const handleUsersPageChange = value => {
+  usersPage.value = value
+}
+
+const handleUsersSearch = value => {
+  usersSearch.value = value
+  usersPage.value = 1
+  getUsers()
+}
+
+const handleUsersClick = value => {
+  userId.value = value.id
+  userName.value = value.name
+  showUserDialog.value = false
+  emit('userChange', value.id)
+}
 
 const onPageChange = (value) => {
   emit('pageChange', value)
@@ -115,6 +169,22 @@ const onDetail = (id) => {
   emit('detail', id)
 }
 
+const getUsers = async () => {
+  let url = `users?page=${usersPage.value}`
+  if (usersSearch.value)
+    url += `&search=${usersSearch.value}`
+  const response = await Api.get(url)
+  if (response.status === 200) {
+    const result = response.data
+    users.value = result.data
+    usersLastPage.value = result.meta.last_page
+  }
+}
+
+watch(showUserDialog, () => {
+  if (showUserDialog.value)
+    getUsers()
+})
 </script>
 
 <style lang="scss" scoped>

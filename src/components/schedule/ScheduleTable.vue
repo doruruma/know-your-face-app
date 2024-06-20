@@ -102,7 +102,7 @@ defineProps({
 })
 
 const showUserDialog = ref(false)
-const userId = ref(0)
+const userId = ref(null)
 const userName = ref('')
 const users = ref([])
 const usersPage = ref(1)

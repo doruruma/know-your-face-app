@@ -4,6 +4,7 @@
     <PresenceTable
       :data="data"
       :last-page="lastPage"
+      @userChange="handleUserChange"
       @pageChange="handlePageChange"
       @statusChange="handleStatusChange"
       @detail="handleDetail" />
@@ -20,13 +21,20 @@ const data = ref([])
 const lastPage = ref(1)
 const page = ref(1)
 const statusId = ref(null)
+const userId = ref(null)
 
-const handlePageChange = (value) => {
+const handlePageChange = value => {
   page.value = value
   getData()
 }
 
-const handleStatusChange = (value) => {
+const handleUserChange = value => {
+  userId.value = value
+  page.value = 1
+  getData()
+}
+
+const handleStatusChange = value => {
   switch (value) {
     case 1:
       statusId.value = 0
@@ -38,6 +46,7 @@ const handleStatusChange = (value) => {
       statusId.value = null
       break;
   }
+  page.value = 1
   getData()
 }
 
@@ -50,6 +59,8 @@ const getData = async () => {
     let url = `presences?page=${page.value}`
     if (statusId.value !== null)
       url += `&is_remote=${statusId.value}`
+    if (userId.value !== null)
+      url += `&user_id=${userId.value}`
     const response = await Api.get(url)
     if (response.status === 200) {
       const result = response.data
