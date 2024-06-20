@@ -3,11 +3,17 @@
     <v-text-field
       v-model="model"
       :label="label"
+      :readonly="readonly"
+      :disabled="disabled"
+      :clearable="clearable"
+      :placeholder="placeholder"
       :hint="hint"
       :type="type"
       :color="color"
       :variant="variant"
-      :error-messages="errorMsg">
+      :error-messages="errorMsg"
+      @click="onClick"
+      @click:clear="onClear">
       <template v-if="icon !== ''" v-slot:prepend-inner>
         <v-icon
           :color="errorMsg !== '' ? 'danger' : iconColor"
@@ -26,9 +32,23 @@
 <script setup>
 const model = defineModel()
 const emit = defineEmits([
-  'appendInnerOnClick'
+  'appendInnerOnClick',
+  'click',
+  'clear'
 ])
 defineProps({
+  readonly: {
+    type: Boolean,
+    default: false
+  },
+  disabled: {
+    type: Boolean,
+    default: false
+  },
+  clearable: {
+    type: Boolean,
+    default: false
+  },
   variant: {
     type: String,
     default: 'outlined'
@@ -42,6 +62,10 @@ defineProps({
     default: ''
   },
   hint: {
+    type: String,
+    default: ''
+  },
+  placeholder: {
     type: String,
     default: ''
   },
@@ -73,6 +97,14 @@ defineProps({
 
 const appendInnerOnClick = () => {
   emit('appendInnerOnClick')
+}
+
+const onClick = () => {
+  emit('click')
+}
+
+const onClear = () => {
+  emit('clear')
 }
 </script>
 

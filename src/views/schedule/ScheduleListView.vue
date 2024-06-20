@@ -18,6 +18,7 @@
         <ScheduleTable
           :data="dataTable"
           :last-page="lastPage"
+          @search="handleSearch"
           @pageChange="handlePageChange"
           @edit="handleEdit"
           @delete="handleDelete" />
@@ -34,7 +35,7 @@ import ScheduleTable from '@/components/schedule/ScheduleTable.vue'
 import CalendarView from '@/components/utils/CalendarView.vue'
 import Api from '@/core/ApiService'
 import { globalState } from '@/core/State'
-import { Prompt } from '@/core/Swal'
+import { Prompt, Toast } from '@/core/Swal'
 import router from '@/router'
 import moment from 'moment'
 import { ref, toRefs } from 'vue'
@@ -43,6 +44,7 @@ const global = toRefs(globalState)
 const dataTable = ref([])
 const dataCalendar = ref([])
 const lastPage = ref(1)
+const userId = ref(null)
 const page = ref(1)
 const year = ref(moment().year())
 const tab = ref(null)
@@ -60,12 +62,18 @@ const onTabChange = value => {
   }
 }
 
-const handlePageChange = (value) => {
+const handleSearch = value => {
+  userId.value = value
+  page.value = 1
+  getDataTable()
+}
+
+const handlePageChange = value => {
   page.value = value
   getDataTable()
 }
 
-const handleEdit = (id) => {
+const handleEdit = id => {
   router.push({ name: 'edit-schedule', params: { id } })
 }
 
@@ -77,7 +85,10 @@ const handleDelete = (id) => {
 }
 
 const getDataTable = async () => {
-  const response = await Api.get(`remote-schedules?page=${page.value}`)
+  let url = `remote-schedules?page=${page.value}`
+  if (userId.value)
+    url += `&user_id=${userId.value}`
+  const response = await Api.get(url)
   if (response.status === 200) {
     const result = response.data
     dataTable.value = result.data
@@ -90,14 +101,29 @@ const getDataCalendar = async () => {
   if (response.status === 200) {
     const responseData = response.data.data
     responseData.map(value => {
-      value.name = value.user.name ?? '-'
+      value.name = `${value.user.name} WFH` ?? '-'
     })
     dataCalendar.value = responseData
   }
 }
 
-const deleteData = async () => {
-
+const deleteData = async id => {
+  try {
+    global.isLoading.value = true
+    const response = await Api.post(`remote-schedule/${id}`, { _method: 'delete' })
+    if (response.status === 200) {
+      page.value = 1
+      getDataTable()
+      Toast.fire({
+        title: 'Data terhapus',
+        icon: 'success'
+      })
+    }
+  } catch (error) {
+    console.log(error)
+  } finally {
+    global.isLoading.value = false
+  }
 }
 </script>
 

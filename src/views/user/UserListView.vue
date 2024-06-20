@@ -32,12 +32,12 @@ const lastPage = ref(1)
 const page = ref(1)
 const search = ref(null)
 
-const handlePageChange = (value) => {
+const handlePageChange = value => {
   page.value = value
   getData()
 }
 
-const handleSearch = (value) => {
+const handleSearch = value => {
   search.value = value
   page.value = 1
   getData()

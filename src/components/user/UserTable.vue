@@ -1,6 +1,6 @@
 <template>
 
-  <v-row class="justify-end pb-3">
+  <v-row class="justify-end">
     <v-col cols="12" lg="4" sm="6" xs="12">
       <div class="d-sm-flex d-xs-block align-center">
         <TextField
@@ -32,7 +32,9 @@
 
   <v-table
     fixed-header
-    style="max-height: 540px">
+    :hover="!isCrud"
+    style="max-height: 540px"
+    class="mt-sm-0 mt-3">
     <thead>
       <tr class="text-left">
         <th>Nama</th>
@@ -64,39 +66,44 @@
         <td>
           <div class="d-flex align-center">
             <v-btn
-              variant="flat"
-              icon="mdi-information-variant"
-              size="small"
-              class="mr-2"
-              @click="() => onDetail(item.id)">
-            </v-btn>
-            <v-btn
-              variant="flat"
-              icon="mdi-pencil"
-              size="small"
+              v-if="!isCrud"
+              variant="tonal"
+              :prepend-icon="selectedId === item.id ? 'mdi-check-bold' : ''"
               color="teal"
-              class="mr-2"
-              @click="() => onEdit(item.id)">
+              @click="() => onClick(item)">
+              {{ selectedId === item.id ? 'Terpilih' : 'Pilih' }}
             </v-btn>
-            <v-btn
-              variant="flat"
-              icon="mdi-trash-can"
-              color="red"
-              size="small"
-              @click="() => onDelete(item.id)">
-            </v-btn>
+            <template v-if="isCrud">
+              <v-btn
+                variant="flat"
+                icon="mdi-information-variant"
+                size="small"
+                class="mr-2"
+                @click="() => onDetail(item.id)">
+              </v-btn>
+              <v-btn
+                variant="flat"
+                icon="mdi-pencil"
+                size="small"
+                color="teal"
+                class="mr-2"
+                @click="() => onEdit(item.id)">
+              </v-btn>
+              <v-btn
+                variant="flat"
+                icon="mdi-trash-can"
+                color="red"
+                size="small"
+                @click="() => onDelete(item.id)">
+              </v-btn>
+            </template>
           </div>
         </td>
       </tr>
     </tbody>
   </v-table>
 
-  <v-pagination
-    v-if="data.length > 0"
-    v-model="page"
-    :length="lastPage"
-    class="mt-4"
-    @update:modelValue="onPageChange">
+  <v-pagination v-if="data.length > 0" v-model="page" :length="lastPage" class="mt-4" @update:modelValue="onPageChange">
   </v-pagination>
 
 </template>
@@ -111,6 +118,14 @@ defineProps({
     type: Array,
     default: Array
   },
+  isCrud: {
+    type: Boolean,
+    default: true
+  },
+  selectedId: {
+    type: Number,
+    default: 0
+  },
   lastPage: {
     type: Number,
     default: 1
@@ -122,6 +137,7 @@ const page = ref(1)
 const emit = defineEmits([
   'search',
   'pageChange',
+  'click',
   'detail',
   'edit',
   'delete'
@@ -136,15 +152,19 @@ const onSearch = () => {
   emit('search', search.value)
 }
 
-const onDetail = (id) => {
+const onClick = item => {
+  emit('click', item)
+}
+
+const onDetail = id => {
   emit('detail', id)
 }
 
-const onEdit = (id) => {
+const onEdit = id => {
   emit('edit', id)
 }
 
-const onDelete = (id) => {
+const onDelete = id => {
   emit('delete', id)
 }
 </script>

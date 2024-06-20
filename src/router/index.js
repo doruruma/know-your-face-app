@@ -9,6 +9,7 @@ import PresenceDetailView from '@/views/presence/PresenceDetailView.vue'
 import HolidayListView from '@/views/holiday/HolidayListView.vue'
 import HolidayFormView from '@/views/holiday/HolidayFormView.vue'
 import ScheduleListView from '@/views/schedule/ScheduleListView.vue'
+import ScheduleFormView from '@/views/schedule/ScheduleFormView.vue'
 import UserListView from '@/views/user/UserListView.vue'
 import UserFormView from '@/views/user/UserFormView.vue'
 import UserDetailView from '@/views/user/UserDetailView.vue'
@@ -91,6 +92,24 @@ const router = createRouter({
           meta: {
             auth: true,
             title: 'Jadwal WFH'
+          }
+        },
+        {
+          path: 'add-schedule',
+          name: 'add-schedule',
+          component: ScheduleFormView,
+          meta: {
+            auth: true,
+            title: 'Tambah Jadwal WFH'
+          }
+        },
+        {
+          path: 'edit-schedule/:id',
+          name: 'edit-schedule',
+          component: ScheduleFormView,
+          meta: {
+            auth: true,
+            title: 'Edit Jadwal WFH'
           }
         },
         {
