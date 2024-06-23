@@ -53,7 +53,7 @@ import { useRouter } from "vue-router"
 import { ref } from 'vue'
 import Api from '@/core/ApiService'
 import TextField from '@/components/textfield/TextField.vue'
-import { saveRefreshToken, saveToken } from "@/core/LocalStorageService"
+import { saveRefreshToken, saveToken, saveUser, saveUserId } from "@/core/LocalStorageService"
 
 const initFormData = {
   username: '',
@@ -80,7 +80,9 @@ const formOnSubmit = async () => {
       const data = response.data
       saveToken(data.access_token)
       saveRefreshToken(data.refresh_token)
-      router.push({ name: 'dashboard' })
+      const success = await getUser()
+      if (success)
+        router.push({ name: 'dashboard' })
     }
   } catch (error) {
     if (error.response) {
@@ -95,6 +97,18 @@ const formOnSubmit = async () => {
   } finally {
     isLoading.value = false
   }
+}
+
+const getUser = async () => {
+  const response = await Api.get('user/current')
+  if (response.status === 200) {
+    const data = response.data.data
+    console.log(data)
+    saveUserId(data.id)
+    saveUser(data)
+    return true
+  }
+  return false
 }
 </script>
 

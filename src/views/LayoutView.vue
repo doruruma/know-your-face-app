@@ -26,11 +26,13 @@
         </template>
       </v-list-item>
     </router-link>
-    <v-list-item link subtitle="Pengajuan Cuti" height="48">
-      <template v-slot:prepend>
-        <v-icon icon="mdi-calendar-remove" color="primary"></v-icon>
-      </template>
-    </v-list-item>
+    <router-link custom :to="{ name: 'leave' }" v-slot="{ href, navigate, isActive }">
+      <v-list-item link :active="isActive" subtitle="Pengajuan Cuti" height="48" @click="() => navigate(href)">
+        <template v-slot:prepend>
+          <v-icon icon="mdi-file-document" color="primary"></v-icon>
+        </template>
+      </v-list-item>
+    </router-link>
     <v-divider />
     <router-link custom :to="{ name: 'schedule' }" v-slot="{ href, navigate, isActive }">
       <v-list-item link :active="isActive" subtitle="Jadwal WFH" height="48" @click="() => navigate(href)">
@@ -76,7 +78,7 @@
   <v-app-bar :elevation="0">
     <v-app-bar-nav-icon @click="isShowDrawer = !isShowDrawer" color="primary"></v-app-bar-nav-icon>
     <v-app-bar-title>
-      <div class="text-subtitle-1 text-grey-darken-1">Hai, Admin</div>
+      <div class="text-subtitle-1 text-grey-darken-1">Hai, {{ getUser().name }}</div>
     </v-app-bar-title>
     <template v-slot:append>
       <v-btn icon="mdi-bell-outline" color="primary"></v-btn>
@@ -94,12 +96,13 @@
 </template>
 
 <script setup>
+import { getUser } from '@/core/LocalStorageService'
 import { ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 
+const route = useRoute()
 const isShowDrawer = ref(true)
 const key = ref(true)
-const route = useRoute()
 
 watch(route, () => {
   key.value = !key.value

@@ -22,8 +22,8 @@
       :error-msg="error.office_latitude[0]"
       v-model="form.office_latitude" />
     <TextField
-      label="Toleransi jarak"
-      hint="Ketik batas toleransi jarak meter (M)"
+      label="Toleransi jarak (meter)"
+      hint="Ketik batas toleransi jarak meter (meter)"
       type="number"
       icon="mdi-radar"
       :error-msg="error.max_distance[0]"

@@ -146,6 +146,13 @@ import InputFileField from '@/components/textfield/InputFileField.vue'
 import router from '@/router'
 import { Toast } from '@/core/Swal'
 
+const props = defineProps({
+  id: {
+    type: Number,
+    default: 0
+  }
+})
+
 const initForm = {
   _method: 'POST',
   position_id: null,
@@ -185,22 +192,6 @@ const form = ref(initForm)
 const error = ref(initError)
 const positions = ref(initPositions)
 const endpoint = ref('user')
-
-const props = defineProps({
-  id: {
-    type: Number,
-    default: 0
-  }
-})
-
-onMounted(() => {
-  if (props.id !== 0) {
-    form.value._method = 'PUT'
-    endpoint.value = `user/${props.id}`
-    getData()
-  }
-  getPositions()
-})
 
 const onToggleShowPassword = () => {
   showPassword.value = !showPassword.value
@@ -304,6 +295,15 @@ const getData = async () => {
       imgFace.value = `${API_URL}${responseData.face_image}`
   }
 }
+
+onMounted(() => {
+  if (props.id !== 0) {
+    form.value._method = 'PUT'
+    endpoint.value = `user/${props.id}`
+    getData()
+  }
+  getPositions()
+})
 </script>
 
 <style lang="scss" scoped>

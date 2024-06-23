@@ -8,7 +8,8 @@
       :variant="variant"
       :prepend-icon="null"
       :error-messages="errorMsg"
-      @click:clear="onClear">
+      @click:clear="onClear"
+      accept="image/*">
       <template v-if="icon !== ''" v-slot:prepend-inner>
         <v-icon
           :color="errorMsg !== '' ? 'danger' : iconColor"

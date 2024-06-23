@@ -10,6 +10,9 @@ import HolidayListView from '@/views/holiday/HolidayListView.vue'
 import HolidayFormView from '@/views/holiday/HolidayFormView.vue'
 import ScheduleListView from '@/views/schedule/ScheduleListView.vue'
 import ScheduleFormView from '@/views/schedule/ScheduleFormView.vue'
+import LeaveListView from '@/views/leave/LeaveListView.vue'
+import LeaveFormView from '@/views/leave/LeaveFormView.vue'
+import LeaveActionView from '@/views/leave/LeaveActionView.vue'
 import UserListView from '@/views/user/UserListView.vue'
 import UserFormView from '@/views/user/UserFormView.vue'
 import UserDetailView from '@/views/user/UserDetailView.vue'
@@ -83,6 +86,33 @@ const router = createRouter({
           meta: {
             auth: true,
             title: 'Edit Jadwal Libur'
+          }
+        },
+        {
+          path: 'leave',
+          name: 'leave',
+          component: LeaveListView,
+          meta: {
+            auth: true,
+            title: 'Pengajuan Cuti'
+          }
+        },
+        {
+          path: 'add-leave',
+          name: 'add-leave',
+          component: LeaveFormView,
+          meta: {
+            auth: true,
+            title: 'Ajukan Cuti'
+          }
+        },
+        {
+          path: 'leave-action/:id',
+          name: 'leave-action',
+          component: LeaveActionView,
+          meta: {
+            auth: true,
+            title: 'Tindak Lanjuti Cuti'
           }
         },
         {

@@ -27,15 +27,16 @@
 
   <v-table
     fixed-header
-    style="max-height: 540px">
+    style="max-height: 540px"
+    class="mt-sm-0 mt-3">
     <thead>
       <tr class="text-left">
-        <th>Pegawai</th>
+        <th>Tgl Pengajuan</th>
+        <th>Tgl Approve</th>
+        <th>Pemohon</th>
+        <th>Approver</th>
+        <th>Tgl Cuti</th>
         <th>Status</th>
-        <th>Clock In</th>
-        <th>Clock Out</th>
-        <th>Jarak Clock In</th>
-        <th>Jarak Clock Out</th>
         <th></th>
       </tr>
     </thead>
@@ -43,60 +44,79 @@
       <tr
         v-for="(item, index) in data"
         :key="`${item.id}-${index}`">
+        <td>{{ item.created_at }}</td>
+        <td>{{ item.approved_date ?? '-' }}</td>
         <td>{{ item.user.name ?? '-' }}</td>
-        <td>{{ item.is_remote === 1 ? 'WFH' : 'WFO' }}</td>
+        <td>{{ item.approver?.name ?? '-' }}</td>
         <td>
-          <div class="d-flex align-center py-1">
-            <img
-              class="img-presence mr-2"
-              :src="`${API_URL}${item.face_image_clock_in}`" />
-            <div>{{ item.time_in }}</div>
+          <div
+            v-for="(item, index) in item.leave_details?.data ?? []"
+            :key="`${item.id}-${index}`"
+            class="d-flex align-center">
+            <v-icon icon="mdi-circle-small" />
+            <span>{{ item.leave_date }}</span>
           </div>
         </td>
         <td>
-          <template v-if="item.time_out !== null">
-            <div class="d-flex align-center py-1">
-              <img
-                class="img-presence mr-2"
-                :src="`${API_URL}${item.face_image_clock_out}`" />
-              <div>{{ item.time_out }}</div>
-            </div>
-          </template>
-        </td>
-        <td>
-          {{ item.clock_in_distance ?? '-' }}
-        </td>
-        <td>
-          <template v-if="item.time_out !== null">
-            {{ item.clock_out_distance ?? '-' }}
-          </template>
+          <v-chip
+            variant="tonal"
+            :color="chipWorkstateColor(item.workstate_id)">
+            <small class="font-weight-medium">{{ item.workstate.name }}</small>
+          </v-chip>
         </td>
         <td>
           <div class="d-flex align-center">
-            <v-btn variant="flat" icon="mdi-information-variant" size="small" class="mr-2" @click="() => onDetail(item.id)" />
+            <v-btn
+              v-if="item.workstate_id === 1"
+              variant="flat"
+              class="mr-2"
+              color="teal"
+              prepend-icon="mdi-eye"
+              @click="() => onAction(item.id)">
+              Tinjau
+            </v-btn>
+            <v-btn
+              v-if="item.workstate_id > 1"
+              size="small"
+              variant="flat"
+              icon="mdi-information-variant"
+              @click="() => onDetail(item.id)" />
           </div>
         </td>
       </tr>
     </tbody>
   </v-table>
 
-  <v-pagination v-if="data.length > 0" v-model="page" :length="lastPage" class="mt-4" @update:modelValue="onPageChange">
+  <v-pagination
+    v-if="data.length > 0"
+    v-model="page"
+    :length="lastPage"
+    class="mt-4"
+    @update:modelValue="onPageChange">
   </v-pagination>
 
   <v-dialog v-model="showUserDialog" class="align-start">
     <div class="bg-white pa-6 rounded-lg">
-      <UserTable :data="users" :last-page="usersLastPage" :is-crud="false" :selected-id="userId" @pageChange="handleUsersPageChange" @search="handleUsersSearch" @click="handleUsersClick" />
+      <UserTable
+        :data="users"
+        :last-page="usersLastPage"
+        :is-crud="false"
+        :selected-id="userId"
+        @pageChange="handleUsersPageChange"
+        @search="handleUsersSearch"
+        @click="handleUsersClick" />
     </div>
   </v-dialog>
+
 </template>
 
 <script setup>
-import { API_URL } from '@/core/Constants'
-import { ref, watch } from 'vue'
-import SelectField from '../textfield/SelectField.vue'
-import UserTable from '../user/UserTable.vue'
-import Api from '@/core/ApiService'
+import { onMounted, ref, watch } from 'vue'
 import TextField from '../textfield/TextField.vue'
+import UserTable from '../user/UserTable.vue'
+import Api from '@/core/ApiService';
+import SelectField from '../textfield/SelectField.vue';
+import { chipWorkstateColor } from '@/core/Helper';
 
 defineProps({
   data: {
@@ -109,10 +129,7 @@ defineProps({
   }
 })
 
-const statuses = ref([
-  { id: 1, name: 'WFO' },
-  { id: 2, name: 'WFH' }
-])
+const statuses = ref([])
 const showUserDialog = ref(false)
 const statusId = ref(null)
 const userId = ref(null)
@@ -124,8 +141,9 @@ const usersSearch = ref(null)
 const page = ref(1)
 const emit = defineEmits([
   'pageChange',
-  'statusChange',
   'userChange',
+  'statusChange',
+  'action',
   'detail',
 ])
 
@@ -164,7 +182,11 @@ const onStatusChange = (value) => {
   emit('statusChange', value)
 }
 
-const onDetail = (id) => {
+const onAction = id => {
+  emit('action', id)
+}
+
+const onDetail = id => {
   emit('detail', id)
 }
 
@@ -180,16 +202,20 @@ const getUsers = async () => {
   }
 }
 
+const getStatuses = async () => {
+  const response = await Api.get('workstates')
+  if (response.status === 200)
+    statuses.value = response.data.data
+}
+
 watch(showUserDialog, () => {
   if (showUserDialog.value)
     getUsers()
 })
+
+onMounted(() => {
+  getStatuses()
+})
 </script>
 
-<style lang="scss" scoped>
-.img-presence {
-  width: 100px;
-  height: 100px;
-  object-fit: contain;
-}
-</style>
+<style lang="scss" scoped></style>
