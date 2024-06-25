@@ -1,5 +1,8 @@
 <template>
-  <transition enter-active-class="animate__animated animate__fadeIn animate__faster" appear>
+  <transition
+    enterActiveClass="animate__animated animate__fadeIn animate__faster"
+    appear
+  >
     <v-app class="bg-secondary">
       <LoadingView v-if="isLoading" />
       <RouterView />
@@ -8,9 +11,9 @@
 </template>
 
 <script setup>
-import { globalState } from '@/core/State'
-import { toRefs } from 'vue'
-import LoadingView from '@/components/utils/LoadingView.vue'
+import { globalState } from "@/core/State"
+import { toRefs } from "vue"
+import LoadingView from "@/components/utils/LoadingView.vue"
 
 const { isLoading } = toRefs(globalState)
 </script>

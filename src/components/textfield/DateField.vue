@@ -1,70 +1,95 @@
 <template>
-  <div :class="containerStyles">
+  <div :class="`${containerStyles} d-flex align-center`">
     <v-date-input
-      :color="color"
+      readonly
       v-model="model"
-      cancel-text="Batal"
+      cancelText="Batal"
+      :allowedDates="allowedDates"
+      :hideDetails="hideDetails"
+      :color="color"
       :label="label"
       :variant="variant"
-      :error-messages="errorMsg"
-      :prepend-icon="null"
-      prepend-inner-icon="mdi-calendar"
-      readonly
+      :errorMessages="errorMsg"
+      :prependIcon="null"
+      prependInnerIcon="mdi-calendar"
       @update:model-value="onValueChange"
-      :clearable="clearable" />
+      :clearable="clearable"
+    />
+    <v-btn
+      v-if="dismissable"
+      class="ml-2"
+      color="red"
+      size="small"
+      icon="mdi-close"
+      variant="text"
+      @click="onDismiss"
+    />
   </div>
 </template>
 
 <script setup>
-import { ref, watch } from 'vue'
+import { ref, watch } from "vue"
 
 const model = ref(null)
-const emit = defineEmits([
-  'onValueChange'
-])
+const emit = defineEmits(["onValueChange", "dismiss"])
 
 const props = defineProps({
   value: {
     type: String,
-    default: ''
+    default: "",
+  },
+  allowedDates: {
+    type: Boolean || Array,
+    default: true,
   },
   variant: {
     type: String,
-    default: 'outlined'
+    default: "outlined",
   },
   label: {
     type: String,
-    default: ''
+    default: "",
   },
   color: {
     type: String,
-    default: 'primary'
+    default: "primary",
   },
   icon: {
     type: String,
-    default: 'mdi-calendar'
+    default: "mdi-calendar",
   },
   errorMsg: {
     type: String,
-    default: ''
+    default: "",
   },
   clearable: {
     type: Boolean,
-    default: false
+    default: false,
+  },
+  dismissable: {
+    type: Boolean,
+    default: false,
+  },
+  hideDetails: {
+    type: Boolean,
+    default: false,
   },
   containerStyles: {
     type: String,
-    default: 'mb-4'
-  }
+    default: "mb-4",
+  },
 })
 
-const onValueChange = value => {
-  emit('onValueChange', value)
+const onValueChange = (value) => {
+  emit("onValueChange", value)
+}
+
+const onDismiss = () => {
+  emit("dismiss")
 }
 
 watch(props, () => {
-  if (props.value !== '')
-    model.value = new Date(props.value)
+  if (props.value !== "") model.value = new Date(props.value)
 })
 </script>
 
