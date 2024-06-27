@@ -258,6 +258,12 @@ const onSubmit = async () => {
         Object.assign(error.value, errorContent.data.errors)
         showAlert.value = typeof error.value.dates[0] !== "undefined"
       }
+      if (errorContent.status === 500) {
+        Toast.fire({
+          title: errorContent.data.message,
+          icon: "error",
+        })
+      }
     }
   } finally {
     isLoading.value = false

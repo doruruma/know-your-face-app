@@ -1,6 +1,7 @@
 <template>
   <v-row class="justify-end pt-3">
     <v-col
+      v-if="isManagement()"
       cols="12"
       lg="4"
       sm="6"
@@ -98,7 +99,7 @@
 </template>
 
 <script setup>
-import { API_URL } from "@/core/Constants"
+import { API_URL, isManagement } from "@/core/Constants"
 import { ref, watch } from "vue"
 import TextField from "../textfield/TextField.vue"
 import Api from "@/core/ApiService"
