@@ -274,7 +274,7 @@ const getLeaveTypes = async () => {
 }
 
 const getData = async (id) => {
-  const response = await Api.get(`leave/${id}?detailed=true`)
+  const response = await Api.get(`leave/${id}/requested?detailed=true`)
   if (response.status === 204) {
     Toast.fire({
       title: "Data tidak ditemukan",

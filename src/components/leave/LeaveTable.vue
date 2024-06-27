@@ -46,8 +46,9 @@
     <thead>
       <tr class="text-left">
         <th>Tgl Pengajuan</th>
-        <th>Tgl Approve</th>
+        <th>Jenis</th>
         <th>Pemohon</th>
+        <th>Tgl Approve</th>
         <th>Approver</th>
         <th>Tgl Cuti</th>
         <th>Status</th>
@@ -60,8 +61,9 @@
         :key="`${item.id}-${index}`"
       >
         <td>{{ item.created_at }}</td>
-        <td>{{ item.approved_date ?? "-" }}</td>
+        <td>{{ item.leave_type.name ?? "-" }}</td>
         <td>{{ item.user.name ?? "-" }}</td>
+        <td>{{ item.approved_date ?? "-" }}</td>
         <td>{{ item.approver?.name ?? "-" }}</td>
         <td>
           <div
@@ -100,13 +102,13 @@
               v-if="item.workstate_id === 1 && isManagement()"
               variant="flat"
               class="mr-2"
-              color="teal"
               prependIcon="mdi-eye"
               @click="() => onAction(item.id)"
             >
               Tinjau
             </v-btn>
             <v-btn
+              v-if="!isManagement()"
               size="small"
               variant="flat"
               icon="mdi-information-variant"

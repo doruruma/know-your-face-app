@@ -122,6 +122,7 @@
       </v-list-item>
     </router-link>
     <router-link
+      v-if="isManagement()"
       custom
       :to="{ name: 'user' }"
       v-slot="{ href, navigate, isActive }"
@@ -147,6 +148,7 @@
     </router-link>
     <v-divider />
     <router-link
+      v-if="isManagement()"
       custom
       :to="{ name: 'setting' }"
       v-slot="{ href, navigate, isActive }"
@@ -229,6 +231,7 @@
 </template>
 
 <script setup>
+import { isManagement } from "@/core/Constants"
 import { destroyCredential, getUser } from "@/core/LocalStorageService"
 import { Prompt } from "@/core/Swal"
 import router from "@/router"

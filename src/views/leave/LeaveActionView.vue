@@ -95,7 +95,7 @@
             <td>{{ index + 1 }}</td>
             <td>{{ item.formatted_leave_date }}</td>
             <td>
-              <template v-if="showAction">
+              <template v-if="showManage">
                 <v-btn
                   v-if="item.workstate_id !== 1"
                   class="mr-2"
@@ -157,13 +157,13 @@
         thickness="3"
       />
       <TextareaField
-        v-if="showAction"
+        v-if="showManage"
         v-model="form.approval_notes"
         label="Catatan (opsional)"
         placeholder="Masukan catatan tambahan"
       />
       <v-btn
-        v-if="showAction"
+        v-if="showManage"
         type="submit"
         :loading="isSubmitLoading"
         variant="flat"
@@ -171,7 +171,7 @@
       >
         Simpan
       </v-btn>
-      <template v-if="!showAction">
+      <template v-if="showAction">
         <v-btn
           class="mr-2"
           prepend-icon="mdi-pencil"
@@ -199,7 +199,7 @@ import TextareaField from "@/components/textfield/TextareaField.vue"
 import BackButton from "@/components/utils/BackButton.vue"
 import CircularProgress from "@/components/utils/CircularProgress.vue"
 import Api from "@/core/ApiService"
-import { API_URL, isManagement } from "@/core/Constants"
+import { API_URL, STATE_REQUESTED_ID, isManagement } from "@/core/Constants"
 import { chipWorkstateColor } from "@/core/Helper"
 import { Prompt, Toast } from "@/core/Swal"
 import router from "@/router"
@@ -222,6 +222,7 @@ const id = parseInt(
   typeof route.params.id !== "undefined" ? route.params.id : 0,
 )
 const global = toRefs(globalState)
+const showManage = ref(false)
 const showAction = ref(false)
 const isLoading = ref(false)
 const isSubmitLoading = ref(false)
@@ -234,7 +235,7 @@ const error = ref(initError)
 const getData = async () => {
   try {
     isLoading.value = true
-    const response = await Api.get(`leave/${id}/requested?detailed=true`)
+    const response = await Api.get(`leave/${id}?detailed=true`)
     if (response.status === 204) {
       Toast.fire({
         title: "Data tidak ditemukan",
@@ -248,6 +249,11 @@ const getData = async () => {
       data.value = responseData
       user.value = responseData.user
       details.value = responseData.leave_details.data
+      showManage.value =
+        isManagement() && responseData.workstate_id === STATE_REQUESTED_ID
+      showAction.value =
+        !isManagement() && responseData.workstate_id === STATE_REQUESTED_ID
+      console.log(showAction.value)
     }
   } catch (error) {
     console.log(error)
@@ -330,7 +336,6 @@ const cancelData = async (id) => {
 }
 
 onMounted(() => {
-  showAction.value = isManagement()
   getData()
 })
 </script>

@@ -17,6 +17,7 @@ import LeaveDetailView from '@/views/leave/LeaveDetailView.vue'
 import UserListView from '@/views/user/UserListView.vue'
 import UserFormView from '@/views/user/UserFormView.vue'
 import UserDetailView from '@/views/user/UserDetailView.vue'
+import { isManagement } from '@/core/Constants'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -41,6 +42,7 @@ const router = createRouter({
           component: SettingView,
           meta: {
             auth: true,
+            management: true,
             title: 'Pengaturan'
           }
         },
@@ -167,6 +169,7 @@ const router = createRouter({
           component: UserListView,
           meta: {
             auth: true,
+            management: true,
             title: 'Pegawai'
           }
         },
@@ -176,6 +179,7 @@ const router = createRouter({
           component: UserFormView,
           meta: {
             auth: true,
+            management: true,
             title: 'Tambah Pegawai'
           }
         },
@@ -185,6 +189,7 @@ const router = createRouter({
           component: UserFormView,
           meta: {
             auth: true,
+            management: true,
             title: 'Edit Pegawai'
           }
         },
@@ -194,6 +199,7 @@ const router = createRouter({
           component: UserDetailView,
           meta: {
             auth: true,
+            management: true,
             title: 'Detail Pegawai'
           }
         }
@@ -221,6 +227,12 @@ router.beforeEach((to, from, next) => {
   } else {
     if (getToken() != null) router.push({ name: 'dashboard' })
     else next()
+  }
+  if (to.matched.some((record) => record.meta.management)) {
+    if (!isManagement()) router.push({ name: 'dashboard' })
+    else next()
+  } else {
+    next()
   }
 })
 
