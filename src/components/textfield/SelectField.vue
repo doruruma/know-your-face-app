@@ -11,6 +11,7 @@
       :variant="variant"
       :errorMessages="errorMsg"
       :clearable="clearable"
+      @update:modelValue="onValueChange"
     >
       <template v-slot:item="{ props, item }">
         <v-list-item
@@ -72,11 +73,17 @@ const props = defineProps({
     default: "mb-4",
   },
 })
+const emit = defineEmits(["change"])
+
 const computedItems = computed(() => {
   const result = props.items
   result.unshift({ id: null, name: `Pilih ${props.placeHolder}` })
   return result
 })
+
+const onValueChange = (value) => {
+  emit("change", value)
+}
 </script>
 
 <style lang="scss" scoped></style>

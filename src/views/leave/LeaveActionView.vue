@@ -59,7 +59,10 @@
             <div class="text-subtitle-2 font-weight-medium">Lampiran :</div>
             <i v-if="data.attachment === null">Tidak ada lampiran</i>
             <div v-if="data.attachment">
-              <!-- TODO -->
+              <img
+                id="imgPreview"
+                :src="`${API_URL}${data.attachment}`"
+              />
             </div>
           </div>
         </v-col>
@@ -71,119 +74,122 @@
     Tanggal Yang Diajukan
   </div>
   <div class="bg-white pa-6 rounded-lg mb-3">
-    <v-table
-      fixedHeader
-      style="max-height: 540px"
-    >
-      <thead>
-        <tr class="text-left">
-          <th>#</th>
-          <th>Tanggal</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr
-          v-for="(item, index) in details"
-          :key="index"
-        >
-          <td>{{ index + 1 }}</td>
-          <td>{{ item.formatted_leave_date }}</td>
-          <td>
-            <template v-if="showAction">
-              <v-btn
-                v-if="item.workstate_id !== 1"
-                class="mr-2"
-                variant="tonal"
-                :color="
-                  item.workstate_id === 2
-                    ? 'teal'
-                    : item.workstate_id === 3
-                      ? 'red'
-                      : 'grey'
-                "
-                size="small"
-              >
-                {{
-                  item.workstate_id === 2
-                    ? "Disetujui"
-                    : item.workstate_id === 3
-                      ? "Ditolak"
-                      : "-"
-                }}
-              </v-btn>
-              <div
-                v-if="item.workstate_id === 1"
-                class="d-flex align-center"
-              >
+    <CircularProgress :show="isLoading" />
+    <template v-if="!isLoading">
+      <v-table
+        fixedHeader
+        style="max-height: 540px"
+      >
+        <thead>
+          <tr class="text-left">
+            <th>#</th>
+            <th>Tanggal</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            v-for="(item, index) in details"
+            :key="index"
+          >
+            <td>{{ index + 1 }}</td>
+            <td>{{ item.formatted_leave_date }}</td>
+            <td>
+              <template v-if="showAction">
                 <v-btn
+                  v-if="item.workstate_id !== 1"
                   class="mr-2"
-                  variant="flat"
-                  prependIcon="mdi-check"
-                  color="teal"
+                  variant="tonal"
+                  :color="
+                    item.workstate_id === 2
+                      ? 'teal'
+                      : item.workstate_id === 3
+                        ? 'red'
+                        : 'grey'
+                  "
                   size="small"
-                  @click="() => onApproveClick(item.id, index)"
                 >
-                  Setujui
+                  {{
+                    item.workstate_id === 2
+                      ? "Disetujui"
+                      : item.workstate_id === 3
+                        ? "Ditolak"
+                        : "-"
+                  }}
                 </v-btn>
-                <v-btn
-                  variant="flat"
-                  prependIcon="mdi-close"
-                  color="red"
-                  size="small"
-                  @click="() => onRejectClick(item.id, index)"
+                <div
+                  v-if="item.workstate_id === 1"
+                  class="d-flex align-center"
                 >
-                  Tolak
-                </v-btn>
-              </div>
-            </template>
-          </td>
-        </tr>
-      </tbody>
-    </v-table>
-    <div
-      v-if="error.details[0] != ''"
-      class="text-caption text-error mt-1"
-    >
-      {{ error.details[0] }}
-    </div>
-    <v-divider
-      class="my-6"
-      thickness="3"
-    />
-    <TextareaField
-      v-if="showAction"
-      v-model="form.approval_notes"
-      label="Catatan (opsional)"
-      placeholder="Masukan catatan tambahan"
-    />
-    <v-btn
-      v-if="showAction"
-      type="submit"
-      :loading="isSubmitLoading"
-      variant="flat"
-      @click="onSubmit"
-    >
-      Simpan
-    </v-btn>
-    <template v-if="!showAction">
-      <v-btn
-        class="mr-2"
-        prepend-icon="mdi-pencil"
-        variant="flat"
-        color="teal"
-        @click="onEdit"
+                  <v-btn
+                    class="mr-2"
+                    variant="flat"
+                    prependIcon="mdi-check"
+                    color="teal"
+                    size="small"
+                    @click="() => onApproveClick(item.id, index)"
+                  >
+                    Setujui
+                  </v-btn>
+                  <v-btn
+                    variant="flat"
+                    prependIcon="mdi-close"
+                    color="red"
+                    size="small"
+                    @click="() => onRejectClick(item.id, index)"
+                  >
+                    Tolak
+                  </v-btn>
+                </div>
+              </template>
+            </td>
+          </tr>
+        </tbody>
+      </v-table>
+      <div
+        v-if="error.details[0] != ''"
+        class="text-caption text-error mt-1"
       >
-        Edit
-      </v-btn>
+        {{ error.details[0] }}
+      </div>
+      <v-divider
+        class="my-6"
+        thickness="3"
+      />
+      <TextareaField
+        v-if="showAction"
+        v-model="form.approval_notes"
+        label="Catatan (opsional)"
+        placeholder="Masukan catatan tambahan"
+      />
       <v-btn
-        prepend-icon="mdi-close"
+        v-if="showAction"
+        type="submit"
+        :loading="isSubmitLoading"
         variant="flat"
-        color="red"
-        @click="onDelete"
+        @click="onSubmit"
       >
-        Batalkan
+        Simpan
       </v-btn>
+      <template v-if="!showAction">
+        <v-btn
+          class="mr-2"
+          prepend-icon="mdi-pencil"
+          variant="flat"
+          color="teal"
+          @click="onEdit"
+        >
+          Edit
+        </v-btn>
+        <v-btn
+          prepend-icon="mdi-close"
+          variant="flat"
+          color="red"
+          @click="onDelete"
+        >
+          Batalkan
+        </v-btn>
+      </template>
     </template>
   </div>
 </template>
@@ -193,7 +199,7 @@ import TextareaField from "@/components/textfield/TextareaField.vue"
 import BackButton from "@/components/utils/BackButton.vue"
 import CircularProgress from "@/components/utils/CircularProgress.vue"
 import Api from "@/core/ApiService"
-import { isManagement } from "@/core/Constants"
+import { API_URL, isManagement } from "@/core/Constants"
 import { chipWorkstateColor } from "@/core/Helper"
 import { Prompt, Toast } from "@/core/Swal"
 import router from "@/router"
@@ -329,4 +335,10 @@ onMounted(() => {
 })
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+#imgPreview {
+  width: 320px;
+  height: 320px;
+  object-fit: contain;
+}
+</style>

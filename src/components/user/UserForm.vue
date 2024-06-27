@@ -1,33 +1,45 @@
 <template>
   <div class="text-h5 mb-3">
     <BackButton />
-    {{ id === 0 ? 'Tambah' : 'Edit' }} Pegawai
+    {{ id === 0 ? "Tambah" : "Edit" }} Pegawai
   </div>
   <div class="bg-white pa-6 rounded-lg">
-
     <v-form
       ref="DOM_form"
-      @submit.prevent="onSubmit">
-
+      @submit.prevent="onSubmit"
+    >
       <TextField
         v-model="form.nik"
         label="NIK"
         type="number"
-        :error-msg="error.nik[0]" />
+        :error-msg="error.nik[0]"
+      />
 
       <v-row no-gutters>
-        <v-col cols="12" md="6" xs="12" class="pr-md-4">
+        <v-col
+          cols="12"
+          md="6"
+          xs="12"
+          class="pr-md-4"
+        >
           <TextField
             v-model="form.name"
             label="Nama pegawai"
-            :error-msg="error.name[0]" />
+            :error-msg="error.name[0]"
+          />
         </v-col>
-        <v-col cols="12" md="6" xs="12" class="pl-md-4">
+        <v-col
+          cols="12"
+          md="6"
+          xs="12"
+          class="pl-md-4"
+        >
           <TextField
             v-model="form.phone"
             label="Nomor HP"
             type="number"
-            :error-msg="error.phone[0]" />
+            :error-msg="error.phone[0]"
+          />
         </v-col>
       </v-row>
 
@@ -36,21 +48,25 @@
         label="Email"
         icon="mdi-email"
         type="email"
-        :error-msg="error.email[0]" />
+        :error-msg="error.email[0]"
+      />
 
       <v-radio-group
         inline
         class="mb-4"
         v-model="form.gender"
-        :error-messages="error.gender[0]">
+        :error-messages="error.gender[0]"
+      >
         <v-radio
           color="primary"
           label="Laki-laki"
-          value="M" />
+          value="M"
+        />
         <v-radio
           color="primary"
           label="Perempuan"
-          value="F" />
+          value="F"
+        />
       </v-radio-group>
 
       <SelectField
@@ -60,61 +76,106 @@
         item-title="name"
         place-holder="Posisi Pegawai"
         :items="positions"
-        :error-msg="error.position_id[0]" />
+        :error-msg="error.position_id[0]"
+      />
 
       <v-row
         v-if="id === 0"
-        no-gutters>
-        <v-col cols="12" md="6" xs="12" class="pr-md-4">
+        no-gutters
+      >
+        <v-col
+          cols="12"
+          md="6"
+          xs="12"
+          class="pr-md-4"
+        >
           <TextField
             v-model="form.password"
             label="Password"
             :type="showPassword ? 'text' : 'password'"
             :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
             :error-msg="error.password[0]"
-            @append-inner-on-click="onToggleShowPassword" />
+            @append-inner-on-click="onToggleShowPassword"
+          />
         </v-col>
-        <v-col cols="12" md="6" xs="12" class="pl-md-4">
+        <v-col
+          cols="12"
+          md="6"
+          xs="12"
+          class="pl-md-4"
+        >
           <TextField
             v-model="form.password_confirmation"
             label="Ulangi Password"
             :type="showPasswordConfirm ? 'text' : 'password'"
             :append-icon="showPasswordConfirm ? 'mdi-eye' : 'mdi-eye-off'"
-            @append-inner-on-click="onToggleShowPasswordConfirm" />
+            @append-inner-on-click="onToggleShowPasswordConfirm"
+          />
         </v-col>
       </v-row>
-
     </v-form>
 
-    <v-row no-gutters class="align-center">
-      <v-col cols="12" md="4" xs="12" class="pl-md-4 text-center">
+    <v-row
+      no-gutters
+      class="align-center"
+    >
+      <v-col
+        cols="12"
+        md="4"
+        xs="12"
+        class="pl-md-4 text-center"
+      >
         <img
           class="img-preview"
-          :src="imgProfile" />
+          :src="imgProfile"
+        />
       </v-col>
-      <v-col cols="12" md="8" xs="12" class="pl-md-4">
+      <v-col
+        cols="12"
+        md="8"
+        xs="12"
+        class="pl-md-4"
+      >
         <InputFileField
           v-model="form.profile_image"
           label="Foto Profil"
           icon="mdi-paperclip"
           @change="onProfileChange"
-          @clear="onProfileReset" />
+          @clear="onProfileReset"
+          :error-msg="error.profile_image[0]"
+        />
       </v-col>
     </v-row>
 
-    <v-row no-gutters class="align-center">
-      <v-col cols="12" md="4" xs="12" class="pl-md-4 text-center">
+    <v-row
+      no-gutters
+      class="align-center"
+    >
+      <v-col
+        cols="12"
+        md="4"
+        xs="12"
+        class="pl-md-4 text-center"
+      >
         <img
           class="img-preview"
-          :src="imgFace" />
+          :src="imgFace"
+        />
       </v-col>
-      <v-col cols="12" md="8" xs="12" class="pl-md-4">
+      <v-col
+        cols="12"
+        md="8"
+        xs="12"
+        class="pl-md-4"
+      >
         <InputFileField
           v-model="form.face_image"
           label="Foto Wajah"
           icon="mdi-paperclip"
           @change="onFaceChange"
-          @clear="onFaceReset" />
+          @clear="onFaceReset"
+          :error-msg="error.face_image[0]"
+        />
       </v-col>
     </v-row>
 
@@ -122,49 +183,51 @@
       class="mr-2"
       color="secondary"
       variant="flat"
-      @click="onReset">
+      @click="onReset"
+    >
       Reset
     </v-btn>
 
     <v-btn
       :loading="isLoading"
       variant="flat"
-      @click="onSubmit">
+      @click="onSubmit"
+    >
       Simpan
     </v-btn>
   </div>
 </template>
 
 <script setup>
-import TextField from '@/components/textfield/TextField.vue'
-import SelectField from '@/components/textfield/SelectField.vue'
-import BackButton from '@/components/utils/BackButton.vue'
-import Api from '@/core/ApiService'
-import { API_URL } from '@/core/Constants'
-import { onMounted, ref } from 'vue'
-import InputFileField from '@/components/textfield/InputFileField.vue'
-import router from '@/router'
-import { Toast } from '@/core/Swal'
+import TextField from "@/components/textfield/TextField.vue"
+import SelectField from "@/components/textfield/SelectField.vue"
+import BackButton from "@/components/utils/BackButton.vue"
+import Api from "@/core/ApiService"
+import { API_URL } from "@/core/Constants"
+import { onMounted, ref } from "vue"
+import InputFileField from "@/components/textfield/InputFileField.vue"
+import router from "@/router"
+import { Toast } from "@/core/Swal"
 
 const props = defineProps({
   id: {
     type: Number,
-    default: 0
-  }
+    default: 0,
+  },
 })
 
 const initForm = {
-  _method: 'POST',
+  _method: "POST",
   position_id: null,
-  name: '',
-  nik: '',
-  email: '',
-  phone: '',
-  gender: 'asal',
-  password: '',
-  password_confirmation: '',
+  name: "",
+  nik: "",
+  email: "",
+  phone: "",
+  gender: "asal",
+  password: "",
+  password_confirmation: "",
   profile_image: null,
-  face_image: null
+  face_image: null,
 }
 const initError = {
   position_id: [],
@@ -175,11 +238,9 @@ const initError = {
   gender: [],
   password: [],
   profile_image: [],
-  face_image: []
+  face_image: [],
 }
-const initPositions = [
-  { id: null, name: 'Pilih Posisi Pegawai' }
-]
+const initPositions = [{ id: null, name: "Pilih Posisi Pegawai" }]
 const initImgDefault = `${API_URL}storage/profile-images/default-profile.png`
 
 const DOM_form = ref(null)
@@ -191,7 +252,7 @@ const imgFace = ref(initImgDefault)
 const form = ref(initForm)
 const error = ref(initError)
 const positions = ref(initPositions)
-const endpoint = ref('user')
+const endpoint = ref("user")
 
 const onToggleShowPassword = () => {
   showPassword.value = !showPassword.value
@@ -201,7 +262,7 @@ const onToggleShowPasswordConfirm = () => {
   showPasswordConfirm.value = !showPasswordConfirm.value
 }
 
-const onProfileChange = e => {
+const onProfileChange = (e) => {
   try {
     imgProfile.value = URL.createObjectURL(e.target.files[0])
   } catch (error) {
@@ -213,7 +274,7 @@ const onProfileReset = () => {
   imgProfile.value = initImgDefault
 }
 
-const onFaceChange = e => {
+const onFaceChange = (e) => {
   try {
     imgFace.value = URL.createObjectURL(e.target.files[0])
   } catch (error) {
@@ -239,10 +300,9 @@ const onReset = () => {
 }
 
 const onSubmit = async () => {
-  const formData = new FormData
+  const formData = new FormData()
   for (const key in form.value) {
-    if (form.value[key])
-      formData.append(key, form.value[key])
+    if (form.value[key]) formData.append(key, form.value[key])
   }
   try {
     isLoading.value = true
@@ -250,8 +310,8 @@ const onSubmit = async () => {
     const response = await Api.post(endpoint.value, formData)
     if (response.status === 201 || response.status === 200) {
       Toast.fire({
-        title: 'Data tersimpan',
-        icon: 'success'
+        title: "Data tersimpan",
+        icon: "success",
       })
       router.back()
     }
@@ -269,25 +329,24 @@ const onSubmit = async () => {
 }
 
 const getPositions = async () => {
-  const response = await Api.get('positions/get-staff-no-paging')
-  if (response.status === 200)
-    positions.value = response.data.data
+  const response = await Api.get("positions/get-staff-no-paging")
+  if (response.status === 200) positions.value = response.data.data
 }
 
 const getData = async () => {
   const response = await Api.get(endpoint.value)
   if (response.status === 204) {
     Toast.fire({
-      title: 'Data tidak ditemukan',
-      icon: 'warning'
+      title: "Data tidak ditemukan",
+      icon: "warning",
     })
     router.back()
     return
   }
   if (response.status === 200) {
     const responseData = response.data.data
-    Object.keys(responseData).forEach(key => {
-      if (key !== 'profile_image' && key !== 'face_image')
+    Object.keys(responseData).forEach((key) => {
+      if (key !== "profile_image" && key !== "face_image")
         form.value[key] = responseData[key]
     })
     imgProfile.value = `${API_URL}${responseData.profile_image}`
@@ -298,7 +357,7 @@ const getData = async () => {
 
 onMounted(() => {
   if (props.id !== 0) {
-    form.value._method = 'PUT'
+    form.value._method = "PUT"
     endpoint.value = `user/${props.id}`
     getData()
   }

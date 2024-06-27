@@ -17,7 +17,41 @@
         placeHolder="salah satu"
         :items="leaveTypes"
         :errorMsg="error.leave_type_id[0]"
+        @change="handleLeaveTypeIdChange"
       />
+
+      <v-row
+        v-if="form.leave_type_id === SICK_LEAVE_ID"
+        no-gutters
+        class="align-center"
+      >
+        <v-col
+          cols="12"
+          md="4"
+          xs="12"
+          class="pl-md-4 text-center"
+        >
+          <img
+            class="img-preview"
+            :src="imgAttachment"
+          />
+        </v-col>
+        <v-col
+          cols="12"
+          md="8"
+          xs="12"
+          class="pl-md-4"
+        >
+          <InputFileField
+            v-model="form.attachment"
+            label="Lampiran"
+            icon="mdi-paperclip"
+            @change="onAttachmentChange"
+            @clear="onAttachmentReset"
+            :error-msg="error.attachment[0]"
+          />
+        </v-col>
+      </v-row>
 
       <TextareaField
         v-model="form.notes"
@@ -111,6 +145,8 @@ import moment from "moment"
 import { Toast } from "@/core/Swal"
 import router from "@/router"
 import { getUserId } from "@/core/LocalStorageService"
+import InputFileField from "../textfield/InputFileField.vue"
+import { API_URL, LEAVE_ID, SICK_LEAVE_ID } from "@/core/Constants"
 
 const props = defineProps({
   id: {
@@ -135,10 +171,13 @@ const initError = {
   dates: [],
 }
 const initLeaveTypes = [{ id: null, name: "Pilih Jenis Cuti" }]
+const initImgDefault = `${API_URL}storage/leave-attachments/default-attachment.png`
 
 const DOM_form = ref(null)
 const isLoading = ref(false)
 const persistLeaveTypeId = ref(0)
+const persistAttachment = ref(initImgDefault)
+const imgAttachment = ref(initImgDefault)
 const form = ref(initForm)
 const error = ref(initError)
 const leaveTypes = ref(initLeaveTypes)
@@ -147,6 +186,25 @@ const showAlert = ref(false)
 
 const onAddDateClick = () => {
   form.value.dates.push("")
+}
+
+const onAttachmentChange = (e) => {
+  try {
+    imgAttachment.value = URL.createObjectURL(e.target.files[0])
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+const onAttachmentReset = () => {
+  imgAttachment.value = initImgDefault
+}
+
+const handleLeaveTypeIdChange = (value) => {
+  if (value === LEAVE_ID) {
+    form.value.attachment = null
+    imgAttachment.value = persistAttachment.value
+  }
 }
 
 const handleDateChange = (index, value) => {
@@ -161,8 +219,10 @@ const handleDateDismiss = (index) => {
 const onReset = () => {
   try {
     error.value = initError
-    DOM_form.value.reset()
     if (props.id > 0) form.value.leave_type_id = persistLeaveTypeId.value
+    form.value.attachment = null
+    imgAttachment.value = persistAttachment
+    DOM_form.value.reset()
   } catch (error) {
     console.log(error)
   }
@@ -227,6 +287,8 @@ const getData = async (id) => {
     const responseData = response.data.data
     const details = responseData.leave_details.data
     persistLeaveTypeId.value = responseData.leave_type_id
+    persistAttachment.value = `${API_URL}${responseData.attachment}`
+    imgAttachment.value = persistAttachment.value
     form.value.leave_type_id = responseData.leave_type_id
     form.value.user_id = responseData.user_id
     form.value.notes = responseData.notes
@@ -248,4 +310,10 @@ onMounted(() => {
 })
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.img-preview {
+  width: 240px;
+  height: 240px;
+  object-fit: contain;
+}
+</style>
