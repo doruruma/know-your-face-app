@@ -28,7 +28,7 @@
 </template>
 
 <script setup>
-import { ref, watch } from "vue"
+import { onMounted, ref, watch } from "vue"
 
 const model = ref(null)
 const emit = defineEmits(["onValueChange", "dismiss"])
@@ -89,6 +89,10 @@ const onDismiss = () => {
 }
 
 watch(props, () => {
+  if (props.value !== "") model.value = new Date(props.value)
+})
+
+onMounted(() => {
   if (props.value !== "") model.value = new Date(props.value)
 })
 </script>

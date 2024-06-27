@@ -1,7 +1,11 @@
 <template>
-
   <v-row class="justify-end pb-3">
-    <v-col cols="12" lg="4" sm="6" xs="12">
+    <v-col
+      cols="12"
+      lg="4"
+      sm="6"
+      xs="12"
+    >
       <div class="d-sm-flex d-xs-block align-center">
         <TextField
           container-styles="flex-1-0 mr-2"
@@ -10,12 +14,14 @@
           icon-color="teal"
           color="teal"
           label="Cari Data"
-          variant="underlined" />
+          variant="underlined"
+        />
         <v-btn
           class="d-none d-sm-flex"
           color="teal"
           variant="flat"
-          @click="onSearch">
+          @click="onSearch"
+        >
           Cari
         </v-btn>
         <v-btn
@@ -23,7 +29,8 @@
           block
           color="teal"
           variant="flat"
-          @click="onSearch">
+          @click="onSearch"
+        >
           Cari
         </v-btn>
       </div>
@@ -32,7 +39,8 @@
 
   <v-table
     fixed-header
-    style="max-height: 540px">
+    style="max-height: 540px"
+  >
     <thead>
       <tr class="text-left">
         <th>Tanggal Libur</th>
@@ -43,8 +51,9 @@
     <tbody>
       <tr
         v-for="(item, index) in data"
-        :key="`${item.id}-${index}`">
-        <td>{{ item.formated_date }}</td>
+        :key="`${item.id}-${index}`"
+      >
+        <td>{{ item.formatted_date }}</td>
         <td>{{ item.name }}</td>
         <td>
           <div class="d-flex align-center">
@@ -54,14 +63,16 @@
               size="small"
               color="teal"
               class="mr-2"
-              @click="() => onEdit(item.id)">
+              @click="() => onEdit(item.id)"
+            >
             </v-btn>
             <v-btn
               variant="flat"
               icon="mdi-trash-can"
               color="red"
               size="small"
-              @click="() => onDelete(item.id)">
+              @click="() => onDelete(item.id)"
+            >
             </v-btn>
           </div>
         </td>
@@ -74,50 +85,45 @@
     v-model="page"
     :length="lastPage"
     class="mt-4"
-    @update:modelValue="onPageChange">
+    @update:modelValue="onPageChange"
+  >
   </v-pagination>
-
 </template>
 
 <script setup>
-import TextField from '../textfield/TextField.vue'
-import { ref } from 'vue'
+import TextField from "../textfield/TextField.vue"
+import { ref } from "vue"
 
 defineProps({
   data: {
     type: Array,
-    default: Array
+    default: Array,
   },
   lastPage: {
     type: Number,
-    default: 1
-  }
+    default: 1,
+  },
 })
 
-const search = ref('')
+const search = ref("")
 const page = ref(1)
-const emit = defineEmits([
-  'search',
-  'pageChange',
-  'edit',
-  'delete'
-])
+const emit = defineEmits(["search", "pageChange", "edit", "delete"])
 
 const onPageChange = (value) => {
-  emit('pageChange', value)
+  emit("pageChange", value)
 }
 
 const onSearch = () => {
   page.value = 1
-  emit('search', search.value)
+  emit("search", search.value)
 }
 
 const onEdit = (id) => {
-  emit('edit', id)
+  emit("edit", id)
 }
 
 const onDelete = (id) => {
-  emit('delete', id)
+  emit("delete", id)
 }
 </script>
 

@@ -1,69 +1,76 @@
 <template>
   <div :class="containerStyles">
     <v-select
-      :color="color"
       v-model="model"
+      :disabled="disabled"
+      :color="color"
       :label="label"
       :items="computedItems"
-      :item-title="itemTitle"
-      :item-value="itemValue"
+      :itemTitle="itemTitle"
+      :itemValue="itemValue"
       :variant="variant"
-      :error-messages="errorMsg"
-      :clearable="clearable">
+      :errorMessages="errorMsg"
+      :clearable="clearable"
+    >
       <template v-slot:item="{ props, item }">
         <v-list-item
           v-bind="props"
-          :disabled="!item.value" />
+          :disabled="!item.value"
+        />
       </template>
     </v-select>
   </div>
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed } from "vue"
 
 const model = defineModel()
 const props = defineProps({
   variant: {
     type: String,
-    default: 'outlined'
+    default: "outlined",
   },
   label: {
     type: String,
-    default: ''
+    default: "",
   },
   color: {
     type: String,
-    default: 'primary'
+    default: "primary",
   },
   items: {
     type: Array,
-    default: Array
+    default: Array,
   },
   itemTitle: {
     type: String,
-    default: ''
+    default: "",
   },
   itemValue: {
     type: String,
-    default: ''
+    default: "",
   },
   errorMsg: {
     type: String,
-    default: ''
+    default: "",
   },
   placeHolder: {
     type: String,
-    default: 'Item'
+    default: "Item",
   },
   clearable: {
     type: Boolean,
-    default: false
+    default: false,
+  },
+  disabled: {
+    type: Boolean,
+    default: false,
   },
   containerStyles: {
     type: String,
-    default: 'mb-4'
-  }
+    default: "mb-4",
+  },
 })
 const computedItems = computed(() => {
   const result = props.items

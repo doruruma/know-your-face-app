@@ -83,7 +83,7 @@
               color="red"
               icon="mdi-close"
             />
-            <span class="ml-1">{{ item.leave_date }}</span>
+            <span class="ml-1">{{ item.formatted_leave_date }}</span>
           </div>
         </td>
         <td>

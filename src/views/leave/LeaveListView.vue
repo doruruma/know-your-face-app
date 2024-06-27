@@ -15,7 +15,8 @@
       @pageChange="handlePageChange"
       @userChange="handleUserChange"
       @statusChange="handleStatusChange"
-      @detail="handleDetail"
+      @edit="handleEdit"
+      @detail="handleAction"
       @action="handleAction"
       @cancel="handleCancel"
     />
@@ -55,8 +56,8 @@ const handleStatusChange = (value) => {
   getData()
 }
 
-const handleDetail = (id) => {
-  router.push({ name: "leave-detail", params: { id } })
+const handleEdit = (id) => {
+  router.push({ name: "edit-leave", params: { id } })
 }
 
 const handleAction = (id) => {

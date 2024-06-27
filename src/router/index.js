@@ -13,6 +13,7 @@ import ScheduleFormView from '@/views/schedule/ScheduleFormView.vue'
 import LeaveListView from '@/views/leave/LeaveListView.vue'
 import LeaveFormView from '@/views/leave/LeaveFormView.vue'
 import LeaveActionView from '@/views/leave/LeaveActionView.vue'
+import LeaveDetailView from '@/views/leave/LeaveDetailView.vue'
 import UserListView from '@/views/user/UserListView.vue'
 import UserFormView from '@/views/user/UserFormView.vue'
 import UserDetailView from '@/views/user/UserDetailView.vue'
@@ -107,12 +108,30 @@ const router = createRouter({
           }
         },
         {
+          path: 'edit-leave/:id',
+          name: 'edit-leave',
+          component: LeaveFormView,
+          meta: {
+            auth: true,
+            title: 'Edit Pengajuan Cuti'
+          }
+        },
+        {
           path: 'leave-action/:id',
           name: 'leave-action',
           component: LeaveActionView,
           meta: {
             auth: true,
             title: 'Tindak Lanjuti Cuti'
+          }
+        },
+        {
+          path: 'leave/:id',
+          name: 'leave-detail',
+          component: LeaveDetailView,
+          meta: {
+            auth: true,
+            title: 'Detail Pengajuan Cuti'
           }
         },
         {
