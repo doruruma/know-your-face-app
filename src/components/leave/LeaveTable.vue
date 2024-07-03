@@ -99,7 +99,7 @@
         <td>
           <div class="d-flex align-center">
             <v-btn
-              v-if="item.workstate_id === 1 && isManagement()"
+              v-if="item.workstate_id === STATE_REQUESTED_ID && isManagement()"
               variant="flat"
               class="mr-2"
               prependIcon="mdi-eye"
@@ -108,13 +108,15 @@
               Tinjau
             </v-btn>
             <v-btn
-              v-if="!isManagement()"
+              v-if="!isManagement() || item.workstate_id !== STATE_REQUESTED_ID"
               size="small"
               variant="flat"
               icon="mdi-information-variant"
               @click="() => onDetail(item.id)"
             />
-            <template v-if="item.workstate_id === STATE_REQUESTED_ID">
+            <template
+              v-if="item.workstate_id === STATE_REQUESTED_ID && !isManagement()"
+            >
               <v-btn
                 class="ml-2"
                 size="small"
