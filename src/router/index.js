@@ -17,6 +17,7 @@ import LeaveDetailView from '@/views/leave/LeaveDetailView.vue'
 import UserListView from '@/views/user/UserListView.vue'
 import UserFormView from '@/views/user/UserFormView.vue'
 import UserDetailView from '@/views/user/UserDetailView.vue'
+import WorkCalendarView from '@/views/workCalendar/WorkCalendarView.vue'
 import { isManagement } from '@/core/Constants'
 
 const router = createRouter({
@@ -201,6 +202,16 @@ const router = createRouter({
             auth: true,
             management: true,
             title: 'Detail Pegawai'
+          }
+        },
+        {
+          path: 'calendar',
+          name: 'calendar',
+          component: WorkCalendarView,
+          meta: {
+            auth: true,
+            management: true,
+            title: 'Kalender'
           }
         }
       ]

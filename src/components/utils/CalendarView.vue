@@ -5,24 +5,33 @@
     v-model="value"
     :events="computedData"
     :view-mode="type"
-    :weekdays="weekday" />
+    :weekdays="weekday"
+  />
 </template>
 
 <script setup>
-import { computed, ref } from 'vue'
-import { useDate } from 'vuetify'
+import { computed, ref } from "vue"
+import { useDate } from "vuetify"
 
 const props = defineProps({
   data: {
     type: Array,
-    default: Array
-  }
+    default: Array,
+  },
 })
 
-const type = ref('month')
+const type = ref("month")
 const weekday = ref([0, 1, 2, 3, 4, 5, 6])
 const value = ref(new Date())
-const colors = ref(['blue', 'indigo', 'deep-purple', 'cyan', 'green', 'orange', 'grey darken-1'])
+const colors = ref([
+  "blue",
+  "indigo",
+  "deep-purple",
+  "cyan",
+  "green",
+  "orange",
+  "grey darken-1",
+])
 const { startOfDay, endOfDay } = useDate()
 
 const random = (a, b) => {
@@ -31,7 +40,7 @@ const random = (a, b) => {
 
 const computedData = computed(() => {
   const result = []
-  props.data.map(value => {
+  props.data.map((value) => {
     result.push({
       title: value.name,
       start: startOfDay(new Date(value.date)),

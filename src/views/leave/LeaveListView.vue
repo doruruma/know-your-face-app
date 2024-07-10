@@ -2,7 +2,7 @@
   <div class="d-flex justify-space-between align-center mb-2">
     <div class="text-h5 mb-3">Pengajuan Cuti</div>
     <v-btn
-      v-if="getUser().position_id > 2"
+      v-if="isManagement()"
       prependIcon="mdi-plus"
       @click="() => router.push({ name: 'add-leave' })"
       >Ajukan Cuti</v-btn
@@ -28,9 +28,9 @@ import LeaveTable from "@/components/leave/LeaveTable.vue"
 import Api from "@/core/ApiService"
 import router from "@/router"
 import { onMounted, ref, toRefs } from "vue"
-import { getUser } from "@/core/LocalStorageService"
 import { Prompt, Toast } from "@/core/Swal"
 import { globalState } from "@/core/State"
+import { isManagement } from "@/core/Constants"
 
 const global = toRefs(globalState)
 const data = ref([])

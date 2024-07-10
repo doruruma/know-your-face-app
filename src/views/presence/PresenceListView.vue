@@ -1,6 +1,14 @@
 <template>
   <div class="text-h5 mb-3">Kehadiran</div>
   <div class="bg-white pa-6 rounded-lg">
+    <v-btn
+      v-if="isManagement()"
+      prepend-icon="mdi-download"
+      color="teal"
+      @click="onExportClick"
+    >
+      Export Tahunan
+    </v-btn>
     <PresenceTable
       :data="data"
       :last-page="lastPage"
@@ -16,7 +24,9 @@
 <script setup>
 import PresenceTable from "@/components/presence/PresenceTable.vue"
 import Api from "@/core/ApiService"
+import { isManagement } from "@/core/Constants"
 import router from "@/router"
+import moment from "moment"
 import { ref } from "vue"
 
 const data = ref([])
@@ -71,6 +81,21 @@ const handleIsLateChange = (value) => {
 
 const handleDetail = (id) => {
   router.push({ name: "presence-detail", params: { id } })
+}
+
+const onExportClick = async () => {
+  const response = await Api.get(`presences/export/2024-01-01/2024-12-30`, {
+    responseType: "blob",
+  })
+  const blob = new Blob([response.data], {
+    type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+  })
+  const link = document.createElement("a")
+  link.href = window.URL.createObjectURL(blob)
+  link.download = `presences-${moment().format("DD-MM-YYYY")}.xlsx`
+  document.body.appendChild(link)
+  link.click()
+  link.parentNode.removeChild(link)
 }
 
 const getData = async () => {

@@ -28,7 +28,7 @@
       <v-list-item
         link
         :active="isActive"
-        subtitle="Dashboard"
+        subtitle="Home"
         height="48"
         @click="() => navigate(href)"
       >
@@ -81,6 +81,26 @@
       </v-list-item>
     </router-link>
     <v-divider />
+    <!-- <router-link
+      custom
+      :to="{ name: 'calendar' }"
+      v-slot="{ href, navigate, isActive }"
+    >
+      <v-list-item
+        link
+        :active="isActive"
+        subtitle="Kalender"
+        height="48"
+        @click="() => navigate(href)"
+      >
+        <template v-slot:prepend>
+          <v-icon
+            icon="mdi-calendar-month"
+            color="primary"
+          />
+        </template>
+      </v-list-item>
+    </router-link> -->
     <router-link
       custom
       :to="{ name: 'schedule' }"

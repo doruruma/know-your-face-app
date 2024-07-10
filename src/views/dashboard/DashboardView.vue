@@ -1,5 +1,5 @@
 <template>
-  <div class="text-h5 mb-3">Dashboard</div>
+  <div class="text-h5 mb-3">Home</div>
   <v-row v-if="isManagement()">
     <v-col
       cols="6"
@@ -54,12 +54,15 @@
       </div>
     </v-col>
   </v-row>
+  <div class="mt-4"></div>
+  <WorkCalendarView />
 </template>
 
 <script setup>
 import Api from "@/core/ApiService"
 import { isManagement } from "@/core/Constants"
 import { onMounted, ref } from "vue"
+import WorkCalendarView from "@/views/workCalendar/WorkCalendarView.vue"
 
 const requestedLeaveCount = ref(0)
 const approvedSickCount = ref(0)
