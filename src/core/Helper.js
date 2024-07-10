@@ -17,4 +17,17 @@ export const chipWorkstateColor = id => {
   return color
 }
 
-export default { chipWorkstateColor }
+export const chipIsLateColor = id => {
+  let color
+  switch (id) {
+    case 1:
+      color = 'red'
+      break;
+    default:
+      color = 'teal'
+      break;
+  }
+  return color
+}
+
+export default { chipWorkstateColor, chipIsLateColor }

@@ -25,6 +25,24 @@
       xs="12"
     >
       <SelectField
+        v-model="isLate"
+        label="Filter Jam Masuk"
+        place-holder="Jam Masuk"
+        item-value="id"
+        item-title="name"
+        container-styles=""
+        :items="isLates"
+        clearable
+        @update:modelValue="onIsLateChange"
+      />
+    </v-col>
+    <v-col
+      cols="12"
+      lg="4"
+      sm="6"
+      xs="12"
+    >
+      <SelectField
         v-model="statusId"
         label="Filter Status"
         place-holder="Status"
@@ -59,7 +77,15 @@
         :key="`${item.id}-${index}`"
       >
         <td>{{ item.user.name ?? "-" }}</td>
-        <td>{{ item.is_remote === 1 ? "WFH" : "WFO" }}</td>
+        <td>
+          <div>{{ item.is_remote === 1 ? "WFH" : "WFO" }}</div>
+          <v-chip
+            variant="tonal"
+            :color="chipIsLateColor(item.is_late)"
+          >
+            <small class="font-weight-medium">{{ item.is_late_label }}</small>
+          </v-chip>
+        </td>
         <td>
           <div class="d-flex align-center py-1">
             <img
@@ -137,6 +163,7 @@ import SelectField from "../textfield/SelectField.vue"
 import UserTable from "../user/UserTable.vue"
 import Api from "@/core/ApiService"
 import TextField from "../textfield/TextField.vue"
+import { chipIsLateColor } from "@/core/Helper"
 
 defineProps({
   data: {
@@ -153,8 +180,13 @@ const statuses = ref([
   { id: 1, name: "WFO" },
   { id: 2, name: "WFH" },
 ])
+const isLates = ref([
+  { id: 1, name: "Terlambat" },
+  { id: -1, name: "Tepat Waktu" },
+])
 const showUserDialog = ref(false)
 const statusId = ref(null)
+const isLate = ref(null)
 const userId = ref(null)
 const userName = ref("")
 const users = ref([])
@@ -162,7 +194,13 @@ const usersPage = ref(1)
 const usersLastPage = ref(1)
 const usersSearch = ref(null)
 const page = ref(1)
-const emit = defineEmits(["pageChange", "statusChange", "userChange", "detail"])
+const emit = defineEmits([
+  "pageChange",
+  "statusChange",
+  "isLateChange",
+  "userChange",
+  "detail",
+])
 
 const handleInputUserClick = () => {
   showUserDialog.value = true
@@ -197,6 +235,10 @@ const onPageChange = (value) => {
 
 const onStatusChange = (value) => {
   emit("statusChange", value)
+}
+
+const onIsLateChange = (value) => {
+  emit("isLateChange", value)
 }
 
 const onDetail = (id) => {
