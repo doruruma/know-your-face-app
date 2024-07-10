@@ -2,13 +2,21 @@
   <div class="d-flex justify-space-between align-center mb-2">
     <div class="text-h5 mb-3">Pengajuan Cuti</div>
     <v-btn
-      v-if="isManagement()"
+      v-if="!isManagement()"
       prependIcon="mdi-plus"
       @click="() => router.push({ name: 'add-leave' })"
       >Ajukan Cuti</v-btn
     >
   </div>
   <div class="bg-white pa-6 rounded-lg">
+    <v-btn
+      v-if="isManagement()"
+      prepend-icon="mdi-download"
+      color="teal"
+      @click="onExportClick"
+    >
+      Export Tahunan
+    </v-btn>
     <LeaveTable
       :data="data"
       :lastPage="lastPage"
@@ -31,6 +39,7 @@ import { onMounted, ref, toRefs } from "vue"
 import { Prompt, Toast } from "@/core/Swal"
 import { globalState } from "@/core/State"
 import { isManagement } from "@/core/Constants"
+import moment from "moment"
 
 const global = toRefs(globalState)
 const data = ref([])
@@ -70,6 +79,21 @@ const handleCancel = (id) => {
   }).then((result) => {
     if (result.value) cancelData(id)
   })
+}
+
+const onExportClick = async () => {
+  const response = await Api.get(`leaves/export/2024-01-01/2024-12-30`, {
+    responseType: "blob",
+  })
+  const blob = new Blob([response.data], {
+    type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+  })
+  const link = document.createElement("a")
+  link.href = window.URL.createObjectURL(blob)
+  link.download = `leaves-${moment().format("DD-MM-YYYY")}.xlsx`
+  document.body.appendChild(link)
+  link.click()
+  link.parentNode.removeChild(link)
 }
 
 const getData = async () => {
