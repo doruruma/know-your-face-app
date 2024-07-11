@@ -2,6 +2,7 @@
   <div class="d-flex justify-space-between align-center mb-2">
     <div class="text-h5 mb-3">Jadwal WFH</div>
     <v-btn
+      v-if="isManagement()"
       prepend-icon="mdi-plus"
       @click="() => router.push({ name: 'add-schedule' })"
       >Tambah</v-btn
@@ -38,6 +39,7 @@
 import ScheduleTable from "@/components/schedule/ScheduleTable.vue"
 import CalendarView from "@/components/utils/CalendarView.vue"
 import Api from "@/core/ApiService"
+import { isManagement } from "@/core/Constants"
 import { globalState } from "@/core/State"
 import { Prompt, Toast } from "@/core/Swal"
 import router from "@/router"

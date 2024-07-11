@@ -2,6 +2,7 @@
   <div class="d-flex justify-space-between align-center mb-2">
     <div class="text-h5 mb-3">Jadwal Libur</div>
     <v-btn
+      v-if="isManagement()"
       prepend-icon="mdi-plus"
       @click="() => router.push({ name: 'add-holiday' })"
       >Tambah</v-btn
@@ -43,6 +44,7 @@ import moment from "moment"
 import HolidayTable from "@/components/holiday/HolidayTable.vue"
 import router from "@/router"
 import { Prompt, Toast } from "@/core/Swal"
+import { isManagement } from "@/core/Constants"
 
 const global = toRefs(globalState)
 const dataTable = ref([])

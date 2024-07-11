@@ -226,10 +226,10 @@
       </div>
     </v-app-bar-title>
     <template v-slot:append>
-      <v-btn
+      <!-- <v-btn
         icon="mdi-bell-outline"
         color="primary"
-      ></v-btn>
+      ></v-btn> -->
       <v-btn
         icon="mdi-logout"
         color="red"

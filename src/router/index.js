@@ -80,6 +80,7 @@ const router = createRouter({
           component: HolidayFormView,
           meta: {
             auth: true,
+            management: true,
             title: 'Tambah Jadwal Libur'
           }
         },
@@ -89,6 +90,7 @@ const router = createRouter({
           component: HolidayFormView,
           meta: {
             auth: true,
+            management: true,
             title: 'Edit Jadwal Libur'
           }
         },
@@ -152,6 +154,7 @@ const router = createRouter({
           component: ScheduleFormView,
           meta: {
             auth: true,
+            management: true,
             title: 'Tambah Jadwal WFH'
           }
         },
@@ -161,6 +164,7 @@ const router = createRouter({
           component: ScheduleFormView,
           meta: {
             auth: true,
+            management: true,
             title: 'Edit Jadwal WFH'
           }
         },

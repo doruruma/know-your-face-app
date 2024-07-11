@@ -1,59 +1,61 @@
 <template>
-  <div class="text-h5 mb-3">Home</div>
-  <v-row v-if="isManagement()">
-    <v-col
-      cols="6"
-      lg="4"
-      sm="6"
-      xs="6"
-    >
-      <div class="pa-4 bg-white rounded-lg">
-        <div class="text-body-2 mb-4 text-center">Pengajuan Cuti</div>
-        <div class="text-h4 text-center">
-          {{ requestedLeaveCount }}
+  <template v-if="isManagement()">
+    <div class="text-h5 mb-3">Home</div>
+    <v-row>
+      <v-col
+        cols="6"
+        lg="4"
+        sm="6"
+        xs="6"
+      >
+        <div class="pa-4 bg-white rounded-lg">
+          <div class="text-body-2 mb-4 text-center">Pengajuan Cuti</div>
+          <div class="text-h4 text-center">
+            {{ requestedLeaveCount }}
+          </div>
         </div>
-      </div>
-    </v-col>
-    <v-col
-      cols="6"
-      lg="4"
-      sm="6"
-      xs="6"
-    >
-      <div class="pa-4 bg-white rounded-lg">
-        <div class="text-body-2 text-center">Pegawai Hadir</div>
-        <div class="text-h4 mt-4 text-center">
-          {{ presenceCount }} / {{ userCount }}
+      </v-col>
+      <v-col
+        cols="6"
+        lg="4"
+        sm="6"
+        xs="6"
+      >
+        <div class="pa-4 bg-white rounded-lg">
+          <div class="text-body-2 text-center">Pegawai Hadir</div>
+          <div class="text-h4 mt-4 text-center">
+            {{ presenceCount }} / {{ userCount }}
+          </div>
         </div>
-      </div>
-    </v-col>
-    <v-col
-      cols="6"
-      lg="4"
-      sm="6"
-      xs="6"
-    >
-      <div class="pa-4 bg-white rounded-lg">
-        <div class="text-body-2 text-center">Pegawai Cuti</div>
-        <div class="text-h4 mt-4 text-center">
-          {{ approvedLeaveCount }} / {{ userCount }}
+      </v-col>
+      <v-col
+        cols="6"
+        lg="4"
+        sm="6"
+        xs="6"
+      >
+        <div class="pa-4 bg-white rounded-lg">
+          <div class="text-body-2 text-center">Pegawai Cuti</div>
+          <div class="text-h4 mt-4 text-center">
+            {{ approvedLeaveCount }} / {{ userCount }}
+          </div>
         </div>
-      </div>
-    </v-col>
-    <v-col
-      cols="6"
-      lg="4"
-      sm="6"
-      xs="6"
-    >
-      <div class="pa-4 bg-white rounded-lg">
-        <div class="text-body-2 text-center">Pegawai Sakit</div>
-        <div class="text-h4 mt-4 text-center">
-          {{ approvedSickCount }} / {{ userCount }}
+      </v-col>
+      <v-col
+        cols="6"
+        lg="4"
+        sm="6"
+        xs="6"
+      >
+        <div class="pa-4 bg-white rounded-lg">
+          <div class="text-body-2 text-center">Pegawai Sakit</div>
+          <div class="text-h4 mt-4 text-center">
+            {{ approvedSickCount }} / {{ userCount }}
+          </div>
         </div>
-      </div>
-    </v-col>
-  </v-row>
+      </v-col>
+    </v-row>
+  </template>
   <div class="mt-4"></div>
   <WorkCalendarView />
 </template>

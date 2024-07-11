@@ -47,7 +47,10 @@
           </div>
         </td>
         <td>
-          <div class="d-flex align-center">
+          <div
+            class="d-flex align-center"
+            v-if="isManagement()"
+          >
             <v-btn
               variant="flat"
               icon="mdi-pencil"
