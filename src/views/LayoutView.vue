@@ -188,18 +188,26 @@
         </template>
       </v-list-item>
     </router-link>
-    <v-list-item
-      link
-      subtitle="Profil Saya"
-      height="48"
+    <router-link
+      custom
+      :to="{ name: 'update-profile' }"
+      v-slot="{ href, navigate, isActive }"
     >
-      <template v-slot:prepend>
-        <v-icon
-          icon="mdi-account-edit-outline"
-          color="primary"
-        />
-      </template>
-    </v-list-item>
+      <v-list-item
+        link
+        :active="isActive"
+        subtitle="Profil Saya"
+        height="48"
+        @click="() => navigate(href)"
+      >
+        <template v-slot:prepend>
+          <v-icon
+            icon="mdi-account-edit-outline"
+            color="primary"
+          />
+        </template>
+      </v-list-item>
+    </router-link>
     <v-list-item
       link
       subtitle="Logout"
@@ -221,9 +229,7 @@
       color="primary"
     ></v-app-bar-nav-icon>
     <v-app-bar-title>
-      <div class="text-subtitle-1 text-grey-darken-1">
-        Hai, {{ getUser().name }}
-      </div>
+      <div class="text-subtitle-1 text-grey-darken-1">Hai, {{ userName }}</div>
     </v-app-bar-title>
     <template v-slot:append>
       <!-- <v-btn
@@ -252,12 +258,15 @@
 
 <script setup>
 import { isManagement } from "@/core/Constants"
-import { destroyCredential, getUser } from "@/core/LocalStorageService"
+import { destroyCredential } from "@/core/LocalStorageService"
 import { Prompt } from "@/core/Swal"
 import router from "@/router"
 import { ref, watch } from "vue"
 import { useRoute } from "vue-router"
+import { globalState } from "@/core/State"
+import { toRefs } from "vue"
 
+const { userName } = toRefs(globalState)
 const route = useRoute()
 const isShowDrawer = ref(true)
 const key = ref(true)

@@ -1,13 +1,14 @@
 <template>
   <div
     id="overlay"
-    class="animate__animated animate__fadeIn d-flex align-center justify-center">
+    class="animate__animated animate__fadeIn d-flex align-center justify-center"
+  >
     <CircularProgress show />
   </div>
 </template>
 
 <script setup>
-import CircularProgress from '@/components/utils/CircularProgress.vue'
+import CircularProgress from "@/components/utils/CircularProgress.vue"
 </script>
 
 <style lang="scss" scoped>

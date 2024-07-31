@@ -70,6 +70,8 @@ import {
   saveUser,
   saveUserId,
 } from "@/core/LocalStorageService"
+import { globalState } from "@/core/State"
+import { toRefs } from "vue"
 
 const initFormData = {
   username: "",
@@ -80,6 +82,7 @@ const initFormError = {
   password: [],
 }
 
+const global = toRefs(globalState)
 const router = useRouter()
 const isLoading = ref(false)
 const formData = ref(initFormData)
@@ -120,6 +123,7 @@ const getUser = async () => {
     const data = response.data.data
     saveUserId(data.id)
     saveUser(data)
+    global.userName.value = data.name
     return true
   }
   return false
